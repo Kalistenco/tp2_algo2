@@ -28,7 +28,7 @@ class Coordenadas {
             longitudPunto2 = longitudPunto2 * (PI/180);
 
             return RADIO_TIERRA * acos(sin(this->latitud) * sin(latitudPunto2) 
-                + cos(this->latitud) * cos(latitudPunto2) * cos (this->longitud - longitudPunto2));
+                + cos(this->latitud) * cos(latitudPunto2) * cos (this->longitud - longitudPunto2)) * 1000;
         }
 
         ~Coordenadas();
