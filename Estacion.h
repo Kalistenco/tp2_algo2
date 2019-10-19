@@ -7,49 +7,57 @@
 
 #ifndef SRC_ESTACION_H_
 #define SRC_ESTACION_H_
+
 #include <string>
 #include <fstream>
 #include <sstream>
+#include "Coordenadas.h"
+
 class Estacion {
-private:
-	typedef unsigned int ui;
-	std::string nombre,linea, calle, altura, barrio,destino,
-	lineasCombinacionSubte, interseccion, sentido,lineasSentNorte,lineasSentSur;
-	std::string longitud, latitud;
-	std::string id;
-private:
-	void leerInformacionSubte(std::string informacion);
-	void leerInformacionFerrocarril(std::string informacion);
-	void leerInformacionMetrobus(std::string informacion);
-public:
+	private:
+		typedef unsigned int ui;
+		std::string id, nombre, linea, calle, altura, barrio,destino,
+		lineasCombinacionSubte, interseccion, sentido,lineasSentNorte,lineasSentSur;
+	
+		std::string longitud, latitud;
 
-	Estacion(std::string informacionEstacion, std::string tipoTransporte);
+		void leerInformacionSubte(std::string informacion);
+		void leerInformacionFerrocarril(std::string informacion);
+		void leerInformacionMetrobus(std::string informacion);
 
-	std::string verCoordenadaLongitud(){
-		return this->longitud;
-	}
-	std::string verCoordenadaLatitud(){
-		return this->latitud;
-	}
-	std::string verId(){
-		return this->id;
-	}
+	public:
 
-	std::string verLinea(){
-		return this->linea;
-	}
-	std::string verCalle(){
-		return this->calle;
-	}
-	std::string verAltura(){
-		return this->altura;
-	}
+		Estacion(std::string informacionEstacion, std::string tipoTransporte);
 
-	std::string verUbicacion(){
-		return this->barrio;
-	}
+		std::string verCoordenadaLongitud(){
+			return this->longitud;
+		}
 
-	~Estacion(){
+		std::string verCoordenadaLatitud(){
+			return this->latitud;
+		}
+
+		std::string verId(){
+			return this->id;
+		}
+
+		std::string verLinea(){
+			return this->linea;
+		}
+
+		std::string verCalle(){
+			return this->calle;
+		}
+
+		std::string verAltura(){
+			return this->altura;
+		}
+
+		std::string verUbicacion(){
+			return this->barrio;
+		}
+
+		~Estacion(){
 
 	}
 };

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <string>
 
 #define PI 3.14159
 #define RADIO_TIERRA 6378.1
@@ -13,11 +14,11 @@ class Coordenadas {
         float longitud;
 
     public:
-        Coordenadas();
+        Coordenadas(){};
 
-        Coordenadas(float latitud, float longitud){
-            this->latitud = latitud;
-            this->longitud = longitud;
+        Coordenadas (std::string longitud, std::string latitud){
+            this->latitud = strtof(latitud.c_str(), 0); 
+            this->longitud = strtof(longitud.c_str(), 0);
         }
 
         float distanciaMetros(float & latitudPunto2, float & longitudPunto2){
@@ -31,7 +32,7 @@ class Coordenadas {
                 + cos(this->latitud) * cos(latitudPunto2) * cos (this->longitud - longitudPunto2)) * 1000;
         }
 
-        ~Coordenadas();
-}
+        ~Coordenadas(){};
+};
 
 #endif

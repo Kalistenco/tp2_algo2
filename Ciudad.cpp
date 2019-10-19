@@ -6,62 +6,80 @@
  */
 
 #include "Ciudad.h"
+#include "util.h"
+#include "Colectivo.h"
+#include "Subte.h"
+#include "Tren.h"
 
 Ciudad::Ciudad(){
-	this->estacionesTren=new Lista<Estacion*>;
-	this->bocasSubte=new Lista<Estacion*>;
-	this->estacionesMetrobus=new Lista<Estacion*>;
 
-	Archivo trenes("estaciones-de-ferrocarril.csv");
-	Lista<std::string> *estacionesTren=trenes.leerArchivo();
-	Archivo metrobus("estaciones-de-metrobus.csv");
-	Lista<std::string> *estacionesMetrobus=metrobus.leerArchivo();
-	Archivo subte("bocas-de-subte.csv");
-	Lista<std::string> *bocasSubte=subte.leerArchivo();
+	this->estacionesTren=new Lista<Tren*>;
+	this->bocasSubte=new Lista<Subte*>;
+	this->estacionesColectivo=new Lista<Colectivo*>;
+
+	Archivo trenes("archivos\estaciones-de-ferrocarril.csv");
+	Lista<std::string> *registrosEstacionesTren=trenes.leerArchivo();
+
+	Archivo colectivos(ARCHIVO_COLECTIVOS);
+	Lista<std::string> *registrosEstacionesColectivo=colectivos.leerArchivo();
+
+	Archivo subtes(ARCHIVO_SUBTES);
+	Lista<std::string> *registrosBocasSubte=subtes.leerArchivo();
 
 /*la comparacion por tipo de transporte queda mal sin tener clase por cada transporte*/
-	estacionesTren->iniciarCursor();
-	while(estacionesTren->avanzarCursor()){
-		std::string infoEstacion=estacionesTren->obtenerCursor();
-		Estacion* nuevaEstacion=new Estacion(infoEstacion,"ferrocarril");
+	registrosEstacionesTren->iniciarCursor();
+
+	while(registrosEstacionesTren->avanzarCursor()){
+		std::string infoEstacion=registrosEstacionesTren->obtenerCursor();
+		Tren* nuevaEstacion=new Tren(infoEstacion);
 		this->estacionesTren->agregar(nuevaEstacion);
 	}
-	bocasSubte->iniciarCursor();
 
-	while(bocasSubte->avanzarCursor()){
-		std::string infoEstacion=estacionesMetrobus->obtenerCursor();
-		Estacion* nuevaEstacion=new Estacion(infoEstacion, "subte");
+	registrosBocasSubte->iniciarCursor();
+
+	while(registrosBocasSubte->avanzarCursor()){
+		std::string infoEstacion=registrosBocasSubte->obtenerCursor();
+		Subte* nuevaEstacion=new Subte(infoEstacion);
 		this->bocasSubte->agregar(nuevaEstacion);
 	}
-	estacionesMetrobus->iniciarCursor();
 
-	while(estacionesMetrobus->avanzarCursor()){
-		std::string infoEstacion=estacionesMetrobus->obtenerCursor();
-		Estacion* nuevaEstacion=new Estacion(infoEstacion, "metrobus");
-		this->estacionesMetrobus->agregar(nuevaEstacion);
+	registrosEstacionesColectivo->iniciarCursor();
+
+	while(registrosEstacionesColectivo->avanzarCursor()){
+		std::string infoEstacion=registrosEstacionesColectivo->obtenerCursor();
+		Colectivo* nuevaEstacion=new Colectivo(infoEstacion);
+		this->estacionesColectivo->agregar(nuevaEstacion);
 	}
+
 	delete estacionesTren;
 	delete bocasSubte;
-	delete estacionesMetrobus;
+	delete estacionesColectivo;
 }
+
 Ciudad::~Ciudad(){
+
 	this->bocasSubte->iniciarCursor();
+
 	while(bocasSubte->avanzarCursor()){
 		delete this->bocasSubte->obtenerCursor();
 	}
-	this->estacionesMetrobus->iniciarCursor();
-	while(this->estacionesMetrobus->avanzarCursor()){
-		delete this->estacionesMetrobus->obtenerCursor();
+
+	this->estacionesColectivo->iniciarCursor();
+
+	while(this->estacionesColectivo->avanzarCursor()){
+		delete this->estacionesColectivo->obtenerCursor();
 	}
+
 	this->estacionesTren->iniciarCursor();
-		while(this->estacionesTren->avanzarCursor()){
-			delete this->estacionesTren->obtenerCursor();
-		}
+
+	while(this->estacionesTren->avanzarCursor()){
+		delete this->estacionesTren->obtenerCursor();
+	
+	}
+	
 	delete this->bocasSubte;
-	delete this->estacionesMetrobus;
+	delete this->estacionesColectivo;
 	delete this->estacionesTren;
-
-
 }
 
 

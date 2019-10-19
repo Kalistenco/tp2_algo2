@@ -289,4 +289,4 @@ template<class T> Nodo<T>* Lista<T>::obtenerNodo(unsigned int posicion) {
     return actual;
 }
 
-#endif /* LISTA_H_ *
+#endif /* LISTA_H_ */

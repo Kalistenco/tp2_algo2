@@ -19,6 +19,7 @@ Estacion::Estacion(std::string informacionEstacion, std::string tipoTransporte){
 		this->leerInformacionMetrobus(informacionEstacion);
 	}
 }
+
 void Estacion::leerInformacionSubte(std::string informacion){
 	std::stringstream registro;
 	std::string dato;

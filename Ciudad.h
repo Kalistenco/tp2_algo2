@@ -9,31 +9,30 @@
 #define SRC_CIUDAD_H_
 #define DISTANCIA_MAX 500
 
-#include "Estacion.h"
-
+#include "Tren.h"
+#include "Colectivo.h"
+#include "Subte.h"
 #include "Archivo.h"
+
 class Ciudad {
-private:
-	typedef unsigned int ui;
-	Lista<Estacion*>*estacionesTren;
-	Lista<Estacion*>*bocasSubte;
-	Lista<Estacion*>*estacionesMetrobus;
 
+	private:
+		Lista<Tren*>*estacionesTren;
+		Lista<Subte*>*bocasSubte;
+		Lista<Colectivo*>*estacionesColectivo;
 
-private:
+	public:
+		/*post lee archivos metrobus, bocas subte, ferrocarriles para crear una lista
+		 * de estaciones por tipo de transporte
+		 * */	
+		Ciudad();
 
-public:
-	/*post lee archivos metrobus, bocas subte, ferrocarriles para crear una lista
-	 * de estaciones por tipo de transporte
-	 * */
-	Ciudad();
-	/*de prueba para ver la carga correcta de archivos*/
-	Lista<Estacion*>*verEstacionesTren(){
-		return this->estacionesTren;
-	}
+		/*de prueba para ver la carga correcta de archivos*/
+		Lista<Tren*>*verEstacionesTren(){
+			return this->estacionesTren;
+		}
 
-
-	~Ciudad();
+		~Ciudad();
 };
 
 #endif /* SRC_CIUDAD_H_ */
