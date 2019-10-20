@@ -15,6 +15,7 @@ class Tren{
         Tren(std::string datos);
 
         void verRamal(){
+            std::cout<< "ENTRO A VER RAMAL" << std::endl;
             std::cout<< this->ramal << std::endl;
         }
 };

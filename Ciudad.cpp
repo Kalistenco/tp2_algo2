@@ -17,7 +17,7 @@ Ciudad::Ciudad(){
 	this->bocasSubte=new Lista<Subte*>;
 	this->estacionesColectivo=new Lista<Colectivo*>;
 
-	Archivo trenes("archivos\estaciones-de-ferrocarril.csv");
+	Archivo trenes(ARCHIVO_TRENES);
 	Lista<std::string> *registrosEstacionesTren=trenes.leerArchivo();
 
 	Archivo colectivos(ARCHIVO_COLECTIVOS);

@@ -6,7 +6,6 @@
  */
 
 #include "Archivo.h"
-#include <string>
 #include<iostream>
 #include <fstream>
 #include "Lista.h"
@@ -29,7 +28,6 @@ Lista<std::string>* Archivo::leerArchivo(){
     std::ifstream archivo(linkArchivo.c_str());
 		
 	while(!archivo.eof()){
-		std::cout<<"ENTRANDO AL WHILE DEL EOF" << std::endl;
 		std::string lineaVacia;
 		getline(archivo, lineaVacia);
 		listaDeRegistros->agregar(lineaVacia);

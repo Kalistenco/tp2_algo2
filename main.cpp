@@ -14,7 +14,11 @@ int main(){
 	
 	estaciones->iniciarCursor();
 	/*de prueba para ver la carga de archivos*/
+			std::cout<<"INICIO CURSOR";
+
+
 	while(estaciones->avanzarCursor()){
+			std::cout<<"ENTRASTE AL WHILE?";
 			estaciones->obtenerCursor()->verRamal();
 	}
 
