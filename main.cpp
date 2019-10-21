@@ -7,19 +7,19 @@
 
 #include <iostream>
 #include "Ciudad.h"
-
+using namespace std;
 int main(){
-	Ciudad miCiudad;
-	Lista<Tren*> *estaciones=miCiudad.verEstacionesTren();
-	
-	estaciones->iniciarCursor();
-	/*de prueba para ver la carga de archivos*/
-			std::cout<<"INICIO CURSOR";
 
+	Ciudad caba;
 
-	while(estaciones->avanzarCursor()){
-			std::cout<<"ENTRASTE AL WHILE?";
-			estaciones->obtenerCursor()->verRamal();
+	Lista<Tren*>*trenes=caba.verEstacionesTren();
+	cout.precision(10);
+	trenes->iniciarCursor();
+	while(trenes->avanzarCursor()){
+		Tren * trenIterado=trenes->obtenerCursor();
+		std::cout<<trenIterado->verUbicacionLatitud()<<" | "<<
+		trenIterado->verUbicacionLongitud()<<std::endl;
+
 	}
 
 	return 0;

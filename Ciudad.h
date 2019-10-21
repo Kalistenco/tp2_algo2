@@ -13,6 +13,7 @@
 #include "Colectivo.h"
 #include "Subte.h"
 #include "Archivo.h"
+#include  "util.h"
 
 class Ciudad {
 
@@ -30,6 +31,9 @@ class Ciudad {
 		/*de prueba para ver la carga correcta de archivos*/
 		Lista<Tren*>*verEstacionesTren(){
 			return this->estacionesTren;
+		}
+		Lista<Subte*>* verBocasSubte(){
+			return this->bocasSubte;
 		}
 
 		~Ciudad();

@@ -20,9 +20,13 @@ class Archivo {
 		/*post:referencia a un archivo relativo*/
 		Archivo(std::string linkArchivoRelativo);
 
-		/*pre:referencia existente de archivo, objeto declarado.
-		 *post:referencia a lista en memoria con un elemento por linea leida*/
-		Lista<std::string>* leerArchivo();
+		/*pre:referencia existente de archivo, objeto declarado,
+		 *  Lista por referencia para la carga
+		 * de registros.
+		 *post:referencia a lista con los registros.
+		 * Un registro por espacio de lista.
+		 * ej de registro: LONGITUD-LATITUD-LINEA-NOMBRE-ID-... */
+		void leerArchivo(Lista<std::string> &listaVacia );
 
 		~Archivo(){};	
 };

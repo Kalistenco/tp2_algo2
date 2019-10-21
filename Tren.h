@@ -1,12 +1,12 @@
 #ifndef TREN_H_
 #define TREN_H_
+#include <sstream>
 
-#include <iostream>
 #include "Coordenadas.h"
 
 class Tren{
     private:
-        Coordenadas ubicacion;
+        Coordenadas *ubicacion;
         std::string id, ramal;
 
         void leerInformacion(std::string datos);
@@ -14,10 +14,21 @@ class Tren{
     public:
         Tren(std::string datos);
 
-        void verRamal(){
-            std::cout<< "ENTRO A VER RAMAL" << std::endl;
-            std::cout<< this->ramal << std::endl;
+        std::string verRamal(){
+
+            /*std::cout<< "ENTRO A VER RAMAL" << std::endl;
+            std::cout<< this->ramal << std::endl;*/
+        	return this->ramal;
         }
+        float verUbicacionLatitud(){
+              	return this->ubicacion->verLatitud();
+        }
+        float verUbicacionLongitud(){
+               	return this->ubicacion->verLongitud();
+        }
+        ~Tren(){
+           	delete this->ubicacion;
+         }
 };
 
 #endif

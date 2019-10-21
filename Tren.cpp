@@ -1,5 +1,3 @@
-#include <iostream>
-#include <sstream>
 #include "Tren.h"
 
 Tren::Tren(std::string datos){  
@@ -12,6 +10,10 @@ void Tren::leerInformacion(std::string datos){
     std::string longitud, latitud;
 	registro<<datos;
 	unsigned int columnaLeida=1;
+	/*lee una fila (registro) y por un numero de columna guarda la informacion.
+	 * Para agregar otros campos del archivo colectivos se podria implmentar...
+	 * case (columnaCampoBuscado):guardo la variable
+	 * */
 
 	while(getline(registro,dato,',')){
 		switch(columnaLeida){
@@ -35,7 +37,6 @@ void Tren::leerInformacion(std::string datos){
 		columnaLeida++;
     }
 
-
-    this->ubicacion = Coordenadas(longitud, latitud);
+	this->ubicacion=new Coordenadas(longitud, latitud);
 
 }
