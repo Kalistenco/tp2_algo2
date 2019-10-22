@@ -17,9 +17,7 @@ int main(){
 	trenes->iniciarCursor();
 	while(trenes->avanzarCursor()){
 		Tren * trenIterado=trenes->obtenerCursor();
-		std::cout<<trenIterado->verUbicacionLatitud()<<" | "<<
-		trenIterado->verUbicacionLongitud()<<std::endl;
-
+		std::cout<<trenIterado->verRamal()<<std::endl;
 	}
 
 	return 0;
