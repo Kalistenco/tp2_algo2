@@ -21,6 +21,28 @@ int main(){
 		trenIterado->verUbicacionLongitud()<<std::endl;
 
 	}
-
+	
+	Lista<Colectivo*>*colectivos=caba.verColectivos();
+	cout.precision(10);
+	colectivos->iniciarCursor();
+	while(colectivos->avanzarCursor()){
+		Colectivo * colecIterado=colectivos->obtenerCursor();
+		std::cout<<colecIterado->verUbicacionLatitud()<<" | "<<
+		colecIterado->verUbicacionLongitud()<<" | "<<colecIterado
+		->verLinea()<<std::endl;
+	}
+	Lista<Subte*>*subtes=caba.verBocasSubte();
+	cout.precision(10);
+	subtes->iniciarCursor();
+		while(subtes->avanzarCursor()){
+			Subte * subIterado=subtes->obtenerCursor();
+			std::cout<<subIterado->verUbicacionLatitud()<<" | "<<
+			subIterado->verUbicacionLongitud()<<" | "<<subIterado
+			->verLinea()<<" | "<<subIterado->verCombinaciones()<<std::endl;
+	}
+	
+	
+	
+	
 	return 0;
 }
