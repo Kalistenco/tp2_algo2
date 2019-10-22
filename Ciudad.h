@@ -35,6 +35,9 @@ class Ciudad {
 		Lista<Subte*>* verBocasSubte(){
 			return this->bocasSubte;
 		}
+		Lista<Colectivo*>* verColectivos(){
+			return this->estacionesColectivo;
+		}
 
 		~Ciudad();
 };
