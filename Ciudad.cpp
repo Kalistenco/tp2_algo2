@@ -84,8 +84,8 @@ Ciudad::~Ciudad(){
 
 
 void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada){
-	Lista<Estacion*> * estacionesPartida=new Lista<Estacion*>;
-	Lista<Estacion*> * estacionesLlegada=new Lista<Estacion*>;
+	Lista<Estacion*> * estacionesPartida;
+	Lista<Estacion*> * estacionesLlegada;
 
 	estacionesPartida = obtenerEstacionesCercanas (puntoPartida);
 	estacionesLlegada = obtenerEstacionesCercanas (puntoLlegada);
@@ -98,7 +98,7 @@ void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLleg
 
 	while (estacionesPartida->avanzarCursor()){
 		Estacion * estacionPrueba = estacionesPartida->obtenerCursor();
-		std::cout<<estacionPrueba->verUbicacionLatitud()<<std::endl;
+		std::cout<<estacionPrueba->verLinea()<<std::endl;
 	}
 
 	std::cout<<"ESTACIONES LLEGADA"<<std::endl;
@@ -106,8 +106,8 @@ void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLleg
 	estacionesLlegada->iniciarCursor();
 
 	while (estacionesLlegada->avanzarCursor()){
-		Estacion * estacionPrueba = estacionesLlegada->obtenerCursor();
-		std::cout<<estacionPrueba->verUbicacionLatitud()<<std::endl;
+		Estacion * estacionPrueba2 = estacionesLlegada->obtenerCursor();
+		std::cout<<estacionPrueba2->verLinea()<<std::endl;
 	}
 
 }
@@ -121,7 +121,7 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 
 	while(this->estacionesTren->avanzarCursor()){
 		Coordenadas * ubicacionEstacion = this->estacionesTren->obtenerCursor()->verUbicacion();
-	
+
 		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {	
 			//testing
 			std::cout<<"agrego estacion de tren"<<std::endl;
