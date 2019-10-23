@@ -15,46 +15,33 @@
 
 class Estacion {
 	private:
-		typedef unsigned int ui;
-		std::string id, nombre, linea, calle, altura, barrio,destino,
-		lineasCombinacionSubte, interseccion, sentido,lineasSentNorte,lineasSentSur;
-	
-		std::string longitud, latitud;
+		std::string linea;
+		std::string tipoTransporte; 
+
+		Coordenadas * ubicacion;
 
 		void leerInformacionSubte(std::string informacion);
 		void leerInformacionFerrocarril(std::string informacion);
-		void leerInformacionMetrobus(std::string informacion);
+		void leerInformacionColectivo(std::string informacion);
 
 	public:
 
 		Estacion(std::string informacionEstacion, std::string tipoTransporte);
 
-		std::string verCoordenadaLongitud(){
-			return this->longitud;
+		Coordenadas * verUbicacion(){
+			return this->ubicacion;
 		}
 
-		std::string verCoordenadaLatitud(){
-			return this->latitud;
-		}
-
-		std::string verId(){
-			return this->id;
-		}
+        float verUbicacionLatitud(){
+        	return this->ubicacion->verLatitud();
+        }
+		
+		float verUbicacionLongitud(){
+        	return this->ubicacion->verLongitud();
+        }
 
 		std::string verLinea(){
 			return this->linea;
-		}
-
-		std::string verCalle(){
-			return this->calle;
-		}
-
-		std::string verAltura(){
-			return this->altura;
-		}
-
-		std::string verUbicacion(){
-			return this->barrio;
 		}
 
 		~Estacion(){

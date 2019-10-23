@@ -26,6 +26,11 @@ class Tren{
         float verUbicacionLongitud(){
                	return this->ubicacion->verLongitud();
         }
+
+        Coordenadas verUbicacion(){
+            return this->ubicacion;
+        }
+        
         ~Tren(){
            	delete this->ubicacion;
          }

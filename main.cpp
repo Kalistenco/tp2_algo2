@@ -8,39 +8,40 @@
 #include <iostream>
 #include "Ciudad.h"
 using namespace std;
+
 int main(){
 
 	Ciudad caba;
+	Coordenadas * usuario = new Coordenadas ("-58.997844","-34.5984003");
+	Coordenadas * usuario2 = new Coordenadas ("-58.188026","-34.8332066");
 
-	Lista<Tren*>*trenes=caba.verEstacionesTren();
+	caba.verRecorridoDirecto(*usuario, *usuario2);
+
+
+/*	Lista<Estacion*>*trenes=caba.verEstacionesTren();
 	cout.precision(10);
 	trenes->iniciarCursor();
 	while(trenes->avanzarCursor()){
-		Tren * trenIterado=trenes->obtenerCursor();
-		std::cout<<trenIterado->verRamal()<<std::endl;
+		Estacion * trenIterado=trenes->obtenerCursor();
+		std::cout<<trenIterado->verLinea()<<std::endl;
+			std::cout<<trenIterado->verLinea()<<std::endl;
 	}
-	
-	Lista<Colectivo*>*colectivos=caba.verColectivos();
+
+	Lista<Estacion*>*colectivos=caba.verColectivos();
 	cout.precision(10);
 	colectivos->iniciarCursor();
 	while(colectivos->avanzarCursor()){
-		Colectivo * colecIterado=colectivos->obtenerCursor();
-		std::cout<<colecIterado->verUbicacionLatitud()<<" | "<<
-		colecIterado->verUbicacionLongitud()<<" | "<<colecIterado
-		->verLinea()<<std::endl;
+		Estacion * colecIterado=colectivos->obtenerCursor();
+			std::cout<<colecIterado->verUbicacionLatitud()<<"|"<<colecIterado->verUbicacionLongitud()<<std::endl;
 	}
-	Lista<Subte*>*subtes=caba.verBocasSubte();
+
+	Lista<Estacion*>*subtes=caba.verBocasSubte();
 	cout.precision(10);
 	subtes->iniciarCursor();
 		while(subtes->avanzarCursor()){
-			Subte * subIterado=subtes->obtenerCursor();
-			std::cout<<subIterado->verUbicacionLatitud()<<" | "<<
-			subIterado->verUbicacionLongitud()<<" | "<<subIterado
-			->verLinea()<<" | "<<subIterado->verCombinaciones()<<std::endl;
+			Estacion * subIterado=subtes->obtenerCursor();
+			std::cout<<subIterado->verUbicacionLatitud()<<"|"<<subIterado->verUbicacionLongitud()<<std::endl;
 	}
-	
-	
-	
-	
+*/		
 	return 0;
 }

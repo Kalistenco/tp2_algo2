@@ -5,21 +5,25 @@
  *      Author: cristian
  */
 
+#include <iostream>
 #include "Ciudad.h"
-
+#include "Coordenadas.h"
+#include "Estacion.h"
 
 Ciudad::Ciudad(){
 
-	this->estacionesTren=new Lista<Tren*>;
-	this->bocasSubte=new Lista<Subte*>;
-	this->estacionesColectivo=new Lista<Colectivo*>;
+	this->estacionesTren=new Lista<Estacion*>;
+	this->bocasSubte=new Lista<Estacion*>;
+	this->estacionesColectivo=new Lista<Estacion*>;
 
 	Archivo trenes(ARCHIVO_TRENES);
 	Lista<std::string> registrosEstacionesTren;
 	trenes.leerArchivo(registrosEstacionesTren);
+
 	Archivo colectivos(ARCHIVO_COLECTIVOS);
 	Lista<std::string> registrosEstacionesColectivo;
 	colectivos.leerArchivo(registrosEstacionesColectivo);
+
 	Archivo subtes(ARCHIVO_SUBTES);
 	Lista<std::string> registrosBocasSubte;
 	subtes.leerArchivo(registrosBocasSubte);
@@ -30,7 +34,7 @@ Ciudad::Ciudad(){
 
 	while(registrosEstacionesTren.avanzarCursor()){
 		std::string infoEstacion=registrosEstacionesTren.obtenerCursor();
-		Tren* nuevaEstacion=new Tren(infoEstacion);
+		Estacion* nuevaEstacion=new Estacion(infoEstacion, "ferrocarril");
 		this->estacionesTren->agregar(nuevaEstacion);
 	}
 
@@ -38,7 +42,7 @@ Ciudad::Ciudad(){
 
 	while(registrosBocasSubte.avanzarCursor()){
 		std::string infoEstacion=registrosBocasSubte.obtenerCursor();
-		Subte* nuevaEstacion=new Subte(infoEstacion);
+		Estacion* nuevaEstacion=new Estacion(infoEstacion, "subte");
 		this->bocasSubte->agregar(nuevaEstacion);
 	}
 
@@ -46,7 +50,7 @@ Ciudad::Ciudad(){
 
 	while(registrosEstacionesColectivo.avanzarCursor()){
 		std::string infoEstacion=registrosEstacionesColectivo.obtenerCursor();
-		Colectivo* nuevaEstacion=new Colectivo(infoEstacion);
+		Estacion* nuevaEstacion=new Estacion(infoEstacion, "colectivo");
 		this->estacionesColectivo->agregar(nuevaEstacion);
 	}
 
@@ -79,3 +83,69 @@ Ciudad::~Ciudad(){
 }
 
 
+void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada){
+	Lista<Estacion*> * estacionesPartida=new Lista<Estacion*>;
+	Lista<Estacion*> * estacionesLlegada=new Lista<Estacion*>;
+
+	estacionesPartida = obtenerEstacionesCercanas (puntoPartida);
+	estacionesLlegada = obtenerEstacionesCercanas (puntoLlegada);
+
+	//testing
+
+	std::cout<<"ESTACIONES PARTIDA"<<std::endl;
+
+	estacionesPartida->iniciarCursor();
+
+	while (estacionesPartida->avanzarCursor()){
+		Estacion * estacionPrueba = estacionesPartida->obtenerCursor();
+		std::cout<<estacionPrueba->verUbicacionLatitud()<<std::endl;
+	}
+
+	std::cout<<"ESTACIONES LLEGADA"<<std::endl;
+
+	estacionesLlegada->iniciarCursor();
+
+	while (estacionesLlegada->avanzarCursor()){
+		Estacion * estacionPrueba = estacionesLlegada->obtenerCursor();
+		std::cout<<estacionPrueba->verUbicacionLatitud()<<std::endl;
+	}
+
+}
+
+Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuario){
+	Lista<Estacion*>* estacionesCercanas = new Lista<Estacion*>;
+	
+	this->estacionesTren->iniciarCursor();
+	this->estacionesColectivo->iniciarCursor();
+	this->bocasSubte->iniciarCursor();
+
+	while(this->estacionesTren->avanzarCursor()){
+		Coordenadas * ubicacionEstacion = this->estacionesTren->obtenerCursor()->verUbicacion();
+	
+		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {	
+			//testing
+			std::cout<<"agrego estacion de tren"<<std::endl;
+			Estacion * trenIterado = this->estacionesTren->obtenerCursor();
+			trenIterado->verLinea();
+			estacionesCercanas->agregar(trenIterado);
+		}
+	}
+
+	while(this->estacionesColectivo->avanzarCursor()){
+		Coordenadas * ubicacionEstacion = this->estacionesColectivo->obtenerCursor()->verUbicacion();
+	
+		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {
+			estacionesCercanas->agregar(this->estacionesColectivo->obtenerCursor());
+		}
+	}
+
+	while(this->bocasSubte->avanzarCursor()){
+		Coordenadas * ubicacionEstacion = this->bocasSubte->obtenerCursor()->verUbicacion();
+	
+		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {
+			estacionesCercanas->agregar(this->bocasSubte->obtenerCursor());
+		}
+	}
+
+	return estacionesCercanas;
+}
