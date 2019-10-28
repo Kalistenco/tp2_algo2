@@ -21,13 +21,18 @@ class Ciudad {
 		Lista<Tren*>*estacionesTren;
 		Lista<Subte*>*bocasSubte;
 		Lista<Colectivo*>*estacionesColectivo;
+		bool estanEnElMismoRamal(Tren* origen, Tren* destino);
 
 	public:
 		/*post lee archivos metrobus, bocas subte, ferrocarriles para crear una lista
 		 * de estaciones por tipo de transporte
 		 * */	
 		Ciudad();
-
+	
+		Lista<Tren*> recorridoDirectoTren();
+		/* agregar opciones de pedido de coordenadas */
+		Coordenadas pedirOrigen();
+		Coordenadas pedirDestino();
 		/*de prueba para ver la carga correcta de archivos*/
 		Lista<Tren*>*verEstacionesTren(){
 			return this->estacionesTren;
