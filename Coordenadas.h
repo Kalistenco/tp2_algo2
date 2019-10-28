@@ -44,6 +44,17 @@ class Coordenadas {
             return RADIO_TIERRA * acos(sin(this->latitud) * sin(latitudPunto2) 
                 + cos(this->latitud) * cos(latitudPunto2) * cos (this->longitud - longitudPunto2)) * 1000;
         }
+	 float distanciaMetros( Coordenadas  punto2){
+            //convertir coordenadas a radianes
+            float latitud = this->latitud * (PI/180);
+            float longitud = this->longitud * (PI/180);
+
+            punto2.latitud = punto2.latitud * (PI/180);
+            punto2.longitud = punto2.longitud * (PI/180);
+
+            return RADIO_TIERRA * acos(sin(latitud) * sin(punto2.latitud)
+                + cos(latitud) * cos(punto2.latitud) * cos (longitud - punto2.longitud)) * 1000;
+        }
         float verLongitud(){
         	return this->longitud;
         }
