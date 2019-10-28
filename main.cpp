@@ -17,7 +17,6 @@ int main(){
 
 	caba.verRecorridoDirecto(*usuario, *usuario2);
 
-
 /*	Lista<Estacion*>*trenes=caba.verEstacionesTren();
 	cout.precision(10);
 	trenes->iniciarCursor();
@@ -32,7 +31,7 @@ int main(){
 	colectivos->iniciarCursor();
 	while(colectivos->avanzarCursor()){
 		Estacion * colecIterado=colectivos->obtenerCursor();
-			std::cout<<colecIterado->verUbicacionLatitud()<<"|"<<colecIterado->verUbicacionLongitud()<<std::endl;
+			std::cout<<colecIterado->verLinea()<<std::endl;
 	}
 
 	Lista<Estacion*>*subtes=caba.verBocasSubte();

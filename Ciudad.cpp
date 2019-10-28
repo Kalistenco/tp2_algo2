@@ -123,10 +123,8 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 		Coordenadas * ubicacionEstacion = this->estacionesTren->obtenerCursor()->verUbicacion();
 
 		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {	
-			//testing
-			std::cout<<"agrego estacion de tren"<<std::endl;
 			Estacion * trenIterado = this->estacionesTren->obtenerCursor();
-			trenIterado->verLinea();
+			std::cout<<trenIterado->verLinea()<<std::endl;
 			estacionesCercanas->agregar(trenIterado);
 		}
 	}
@@ -135,7 +133,9 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 		Coordenadas * ubicacionEstacion = this->estacionesColectivo->obtenerCursor()->verUbicacion();
 	
 		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {
-			estacionesCercanas->agregar(this->estacionesColectivo->obtenerCursor());
+			Estacion * colectivoIterado = this->estacionesColectivo->obtenerCursor();
+			std::cout<<colectivoIterado->verLinea()<<std::endl;
+			estacionesCercanas->agregar(colectivoIterado);
 		}
 	}
 
@@ -143,7 +143,9 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 		Coordenadas * ubicacionEstacion = this->bocasSubte->obtenerCursor()->verUbicacion();
 	
 		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {
-			estacionesCercanas->agregar(this->bocasSubte->obtenerCursor());
+			Estacion * subteIterado = this->bocasSubte->obtenerCursor();
+			std::cout<<subteIterado->verLinea()<<std::endl;
+			estacionesCercanas->agregar(subteIterado);
 		}
 	}
 

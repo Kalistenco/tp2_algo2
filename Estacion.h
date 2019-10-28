@@ -8,6 +8,7 @@
 #ifndef SRC_ESTACION_H_
 #define SRC_ESTACION_H_
 
+#include<iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
