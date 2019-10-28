@@ -12,9 +12,9 @@
 
 Ciudad::Ciudad(){
 
-	this->estacionesTren=new Lista<Estacion*>;
-	this->bocasSubte=new Lista<Estacion*>;
-	this->estacionesColectivo=new Lista<Estacion*>;
+	this->estacionesTren = new Lista<Estacion*>;
+	this->bocasSubte = new Lista<Estacion*>;
+	this->estacionesColectivo = new Lista<Estacion*>;
 
 	Archivo trenes(ARCHIVO_TRENES);
 	Lista<std::string> registrosEstacionesTren;
@@ -122,9 +122,8 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 	while(this->estacionesTren->avanzarCursor()){
 		Coordenadas * ubicacionEstacion = this->estacionesTren->obtenerCursor()->verUbicacion();
 
-		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {	
+		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 50) {	
 			Estacion * trenIterado = this->estacionesTren->obtenerCursor();
-			std::cout<<trenIterado->verLinea()<<std::endl;
 			estacionesCercanas->agregar(trenIterado);
 		}
 	}
@@ -132,9 +131,8 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 	while(this->estacionesColectivo->avanzarCursor()){
 		Coordenadas * ubicacionEstacion = this->estacionesColectivo->obtenerCursor()->verUbicacion();
 	
-		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {
+		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 50) {
 			Estacion * colectivoIterado = this->estacionesColectivo->obtenerCursor();
-			std::cout<<colectivoIterado->verLinea()<<std::endl;
 			estacionesCercanas->agregar(colectivoIterado);
 		}
 	}
@@ -142,9 +140,8 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 	while(this->bocasSubte->avanzarCursor()){
 		Coordenadas * ubicacionEstacion = this->bocasSubte->obtenerCursor()->verUbicacion();
 	
-		if(ubicacionEstacion->distanciaMetros(&ubicacionUsuario) < 500) {
+		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 50) {
 			Estacion * subteIterado = this->bocasSubte->obtenerCursor();
-			std::cout<<subteIterado->verLinea()<<std::endl;
 			estacionesCercanas->agregar(subteIterado);
 		}
 	}

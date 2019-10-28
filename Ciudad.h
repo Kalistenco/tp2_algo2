@@ -39,7 +39,7 @@ class Ciudad {
 
 		void verRecorridoDirecto (Coordenadas puntoPartida, Coordenadas puntoLlegada);
 
-		Lista<Estacion*>* obtenerEstacionesCercanas (Coordenadas ubicacion);
+		Lista<Estacion*>* obtenerEstacionesCercanas (Coordenadas ubicacionUsuario);
 
 		~Ciudad();
 };

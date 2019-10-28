@@ -12,8 +12,9 @@ using namespace std;
 int main(){
 
 	Ciudad caba;
-	Coordenadas * usuario = new Coordenadas ("-58.997844","-34.5984003");
-	Coordenadas * usuario2 = new Coordenadas ("-58.188026","-34.8332066");
+	 
+	Coordenadas * usuario = new Coordenadas ("-34.609590","-58.391866");
+	Coordenadas * usuario2 = new Coordenadas ("-34.581311","-58.421445");
 
 	caba.verRecorridoDirecto(*usuario, *usuario2);
 

@@ -36,15 +36,18 @@ class Coordenadas {
             //this->longitud = strtof(longitud.c_str(), 0);
         }
 
-        float distanciaMetros(Coordenadas * punto2){
-            //convertir coordenadas a radianes
-            this->latitud = this->latitud * (PI/180);
-            this->longitud = this->longitud * (PI/180);
-            punto2->latitud = punto2->latitud * (PI/180);
-            punto2->longitud = punto2->longitud * (PI/180);
+        float distanciaMetros(Coordenadas punto2){
+            float latitud = this->latitud;
+            float longitud = this->longitud;
 
-            return RADIO_TIERRA * acos(sin(this->latitud) * sin(punto2->latitud) 
-                + cos(this->latitud) * cos(punto2->latitud) * cos (this->longitud - punto2->longitud)) * 1000;
+            //convertir coordenadas a radianes
+            latitud = this->latitud * (PI/180);
+            longitud = this->longitud * (PI/180);
+            punto2.latitud = punto2.latitud * (PI/180);
+            punto2.longitud = punto2.longitud * (PI/180);
+
+            return RADIO_TIERRA * acos(sin(latitud) * sin(punto2.latitud) 
+                + cos(latitud) * cos(punto2.latitud) * cos (longitud - punto2.longitud)) * 1000;
         }
         
         float verLongitud(){
