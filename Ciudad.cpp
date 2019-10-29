@@ -98,7 +98,7 @@ void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLleg
 
 	while (estacionesPartida->avanzarCursor()){
 		Estacion * estacionPrueba = estacionesPartida->obtenerCursor();
-		std::cout<<estacionPrueba->verLinea()<<std::endl;
+		std::cout<<estacionPrueba->verNombre()<<std::endl;
 	}
 
 	std::cout<<"ESTACIONES LLEGADA"<<std::endl;
@@ -107,7 +107,7 @@ void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLleg
 
 	while (estacionesLlegada->avanzarCursor()){
 		Estacion * estacionPrueba2 = estacionesLlegada->obtenerCursor();
-		std::cout<<estacionPrueba2->verLinea()<<std::endl;
+		std::cout<<estacionPrueba2->verNombre()<<std::endl;
 	}
 
 }
@@ -122,7 +122,7 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 	while(this->estacionesTren->avanzarCursor()){
 		Coordenadas * ubicacionEstacion = this->estacionesTren->obtenerCursor()->verUbicacion();
 
-		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 50) {	
+		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 250) {	
 			Estacion * trenIterado = this->estacionesTren->obtenerCursor();
 			estacionesCercanas->agregar(trenIterado);
 		}
@@ -131,7 +131,7 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 	while(this->estacionesColectivo->avanzarCursor()){
 		Coordenadas * ubicacionEstacion = this->estacionesColectivo->obtenerCursor()->verUbicacion();
 	
-		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 50) {
+		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 250) {
 			Estacion * colectivoIterado = this->estacionesColectivo->obtenerCursor();
 			estacionesCercanas->agregar(colectivoIterado);
 		}
@@ -140,7 +140,7 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 	while(this->bocasSubte->avanzarCursor()){
 		Coordenadas * ubicacionEstacion = this->bocasSubte->obtenerCursor()->verUbicacion();
 	
-		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 50) {
+		if(ubicacionEstacion->distanciaMetros(ubicacionUsuario) < 250) {
 			Estacion * subteIterado = this->bocasSubte->obtenerCursor();
 			estacionesCercanas->agregar(subteIterado);
 		}

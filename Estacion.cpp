@@ -39,6 +39,10 @@ void Estacion::leerInformacionSubte(std::string informacion){
 				case 4:{
 					this->linea=dato;
 				}break;
+
+				case 5:{
+					this->nombre=dato;
+				}break;
 			}
 				columnaLeida+=1;
 		}
@@ -62,6 +66,10 @@ void Estacion::leerInformacionFerrocarril(std::string informacion){
 			case 2:{
 				latitud=dato;
 			}break;
+			
+			case 4:{
+				nombre=dato;
+			}break;
 
 			case 5:{
 				this->linea=dato;
@@ -82,12 +90,16 @@ void Estacion::leerInformacionColectivo(std::string informacion){
 
 	while(getline(registro,dato,',')){
 			switch(columnaLeida){
+			case 3:{
+				this->nombre=dato;
+			}break;
+			
 			case 4:{
-				longitud=dato;
+				latitud=dato;
 			}break;
 
 			case 5:{
-				latitud=dato;
+				longitud=dato;
 			}break;
 
 			case 8:{

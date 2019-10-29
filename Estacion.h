@@ -18,6 +18,7 @@ class Estacion {
 	private:
 		std::string linea;
 		std::string tipoTransporte; 
+		std::string nombre;
 
 		Coordenadas * ubicacion;
 
@@ -43,6 +44,10 @@ class Estacion {
 
 		std::string verLinea(){
 			return this->linea;
+		}
+
+		std::string verNombre(){
+			return this->nombre;
 		}
 
 		~Estacion(){

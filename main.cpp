@@ -13,8 +13,14 @@ int main(){
 
 	Ciudad caba;
 	 
-	Coordenadas * usuario = new Coordenadas ("-34.609590","-58.391866");
-	Coordenadas * usuario2 = new Coordenadas ("-34.581311","-58.421445");
+	//plaza de mayo -34.608349, -58.372704
+	//teatro colon -34.600754, -58.382832
+	//plaza italia -34.581518, -58.421499
+	//retiro -34.592717, -58.375580
+	//belgrabo r -58.4618081,-34.5680506
+
+	Coordenadas * usuario = new Coordenadas ("-58.372704","-34.608349");
+	Coordenadas * usuario2 = new Coordenadas ("-58.4618081","-34.5680506");
 
 	caba.verRecorridoDirecto(*usuario, *usuario2);
 
@@ -32,7 +38,7 @@ int main(){
 	colectivos->iniciarCursor();
 	while(colectivos->avanzarCursor()){
 		Estacion * colecIterado=colectivos->obtenerCursor();
-			std::cout<<colecIterado->verLinea()<<std::endl;
+			std::cout<<colecIterado->verUbicacionLongitud()<<colecIterado->verUbicacionLatitud()<<std::endl;
 	}
 
 	Lista<Estacion*>*subtes=caba.verBocasSubte();
