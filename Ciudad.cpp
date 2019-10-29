@@ -160,20 +160,25 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 	return estacionesCercanas;
 }
 
-Lista<Estacion*>* Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada){
-	Lista<Estacion*> * recorridoDirecto = new Lista<Estacion*>;
+void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada,
+		Lista<Estacion*>*recorridoDirecto){
+	//Lista<Estacion*> * recorridoDirecto = new Lista<Estacion*>;
 
 	estacionesPartida->iniciarCursor();
-	estacionesLlegada->iniciarCursor();
 
 	while(estacionesPartida->avanzarCursor()){
-		if(estacionesPartida->obtenerCursor()->verLinea() == estacionesLlegada->obtenerCursor()->verLinea()){
-			recorridoDirecto->agregar(estacionesPartida->obtenerCursor());
-			recorridoDirecto->agregar(estacionesLlegada->obtenerCursor());
-			break;
+		Estacion *estacionIterada=estacionesPartida->obtenerCursor();
+		estacionesLlegada->iniciarCursor();
+		while(estacionesLlegada->avanzarCursor()){
+			Estacion* estacionLlegada=estacionesLlegada->obtenerCursor();
+			if(estacionIterada->verLinea() == estacionLlegada->verLinea()){
+				recorridoDirecto->agregar(estacionesPartida->obtenerCursor());
+				recorridoDirecto->agregar(estacionesLlegada->obtenerCursor());
+				break;
+			}
 		}
-		estacionesLlegada->avanzarCursor();
+
 	}
 
-	return recorridoDirecto;
+	//return recorridoDirecto;
 }
