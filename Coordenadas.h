@@ -58,6 +58,11 @@ class Coordenadas {
             return this->latitud;
         }
 
+        void setLatitud(float nuevaLatitud);
+
+        void setLongitud(float nuevaLongitud);
+
+
         ~Coordenadas(){
         };
 };

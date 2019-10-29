@@ -7,47 +7,21 @@
 
 #include <iostream>
 #include "Ciudad.h"
+#include "Menu.h"
 using namespace std;
 
 int main(){
 
-	Ciudad caba;
-	 
-	//plaza de mayo -34.608349, -58.372704
-	//teatro colon -34.600754, -58.382832
-	//plaza italia -34.581518, -58.421499
-	//retiro -34.592717, -58.375580
-	//belgrabo r -58.4618081,-34.5680506
-
-	Coordenadas * usuario = new Coordenadas ("-58.382832","-34.600754");
-	Coordenadas * usuario2 = new Coordenadas ("-58.375580","-34.592717");
+	/*Ciudad caba;
+	Coordenadas * usuario = new Coordenadas ("-58.997844","-34.5984003");
+	Coordenadas * usuario2 = new Coordenadas ("-58.188026","-34.8332066");
 
 	caba.verRecorridoDirecto(*usuario, *usuario2);
+*/
+	Menu miMenu;
 
-/*	Lista<Estacion*>*trenes=caba.verEstacionesTren();
-	cout.precision(10);
-	trenes->iniciarCursor();
-	while(trenes->avanzarCursor()){
-		Estacion * trenIterado=trenes->obtenerCursor();
-		std::cout<<trenIterado->verLinea()<<std::endl;
-			std::cout<<trenIterado->verLinea()<<std::endl;
-	}
+	miMenu.iniciarMenu();
 
-	Lista<Estacion*>*colectivos=caba.verColectivos();
-	cout.precision(10);
-	colectivos->iniciarCursor();
-	while(colectivos->avanzarCursor()){
-		Estacion * colecIterado=colectivos->obtenerCursor();
-			std::cout<<colecIterado->verUbicacionLongitud()<<colecIterado->verUbicacionLatitud()<<std::endl;
-	}
 
-	Lista<Estacion*>*subtes=caba.verBocasSubte();
-	cout.precision(10);
-	subtes->iniciarCursor();
-		while(subtes->avanzarCursor()){
-			Estacion * subIterado=subtes->obtenerCursor();
-			std::cout<<subIterado->verUbicacionLatitud()<<"|"<<subIterado->verUbicacionLongitud()<<std::endl;
-	}
-*/		
 	return 0;
 }

@@ -51,7 +51,7 @@ class Estacion {
 		}
 
 		~Estacion(){
-
+			delete this->ubicacion;
 	}
 };
 
