@@ -84,47 +84,50 @@ Ciudad::~Ciudad(){
 
 
 void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada){
-	Lista<Estacion*> * estacionesPartida;
-	Lista<Estacion*> * estacionesLlegada;
-	Lista<Estacion*> * recorridoDirecto;
+	Lista<Estacion*>  estacionesPartida;
+	Lista<Estacion*>  estacionesLlegada;
+	Lista<Estacion*> recorridoDirecto;
 
-	estacionesPartida = obtenerEstacionesCercanas (puntoPartida);
-	estacionesLlegada = obtenerEstacionesCercanas (puntoLlegada);
-	recorridoDirecto = vincularPartidaLlegada(estacionesPartida, estacionesLlegada);
+	obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
+	obtenerEstacionesCercanas (puntoLlegada, &estacionesLlegada);
+	vincularPartidaLlegada(&estacionesPartida, &estacionesLlegada, &recorridoDirecto);
 
 	//testing
 
 	std::cout<<"ESTACIONES PARTIDA"<<std::endl;
 
-	estacionesPartida->iniciarCursor();
+	estacionesPartida.iniciarCursor();
 
-	while (estacionesPartida->avanzarCursor()){
-		Estacion * estacionPrueba = estacionesPartida->obtenerCursor();
+	while (estacionesPartida.avanzarCursor()){
+		Estacion * estacionPrueba = estacionesPartida.obtenerCursor();
 		std::cout<<estacionPrueba->verNombre()<<std::endl;
 	}
 
 	std::cout<<"ESTACIONES LLEGADA"<<std::endl;
 
-	estacionesLlegada->iniciarCursor();
+	estacionesLlegada.iniciarCursor();
 
-	while (estacionesLlegada->avanzarCursor()){
-		Estacion * estacionPrueba2 = estacionesLlegada->obtenerCursor();
+	while (estacionesLlegada.avanzarCursor()){
+		Estacion * estacionPrueba2 = estacionesLlegada.obtenerCursor();
 		std::cout<<estacionPrueba2->verNombre()<<std::endl;
 	}
 
-//	std::cout<<"RECORRIDO DIRECTO"<<std::endl;
+	std::cout<<"RECORRIDO DIRECTO"<<std::endl;
 
-/*	recorridoDirecto->iniciarCursor();
+	recorridoDirecto.iniciarCursor();
 
-	while (recorridoDirecto->avanzarCursor()){
-		Estacion * estacionPrueba3 = recorridoDirecto->obtenerCursor();
+	while (recorridoDirecto.avanzarCursor()){
+		Estacion * estacionPrueba3 = recorridoDirecto.obtenerCursor();
 		std::cout<<estacionPrueba3->verNombre()<<std::endl;
 	}
-*/
+
+
 }
 
-Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuario){
-	Lista<Estacion*>* estacionesCercanas = new Lista<Estacion*>;
+
+void Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,
+		Lista<Estacion*>*estacionesCercanas){
+	//Lista<Estacion*> estacionesCercanas = new Lista<Estacion*>;
 	
 	this->estacionesTren->iniciarCursor();
 	this->estacionesColectivo->iniciarCursor();
@@ -146,6 +149,7 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 			Estacion * colectivoIterado = this->estacionesColectivo->obtenerCursor();
 			estacionesCercanas->agregar(colectivoIterado);
 		}
+
 	}
 
 	while(this->bocasSubte->avanzarCursor()){
@@ -157,7 +161,7 @@ Lista<Estacion*>* Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuari
 		}
 	}
 
-	return estacionesCercanas;
+	//return estacionesCercanas;
 }
 
 void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada,
