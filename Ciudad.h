@@ -39,10 +39,10 @@ class Ciudad {
 
 		void verRecorridoDirecto (Coordenadas puntoPartida, Coordenadas puntoLlegada);
 
-		Lista<Estacion*>* obtenerEstacionesCercanas (Coordenadas ubicacionUsuario);
+		void obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,Lista<Estacion*>*estacionesCercanas);
 
-		Lista<Estacion*>* vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada);
-
+		void vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada
+				,Lista<Estacion*>*recorrido);
 		~Ciudad();
 };
 
