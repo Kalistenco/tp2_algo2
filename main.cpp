@@ -19,8 +19,8 @@ int main(){
 	//retiro -34.592717, -58.375580
 	//belgrabo r -58.4618081,-34.5680506
 
-	Coordenadas * usuario = new Coordenadas ("-58.372704","-34.608349");
-	Coordenadas * usuario2 = new Coordenadas ("-58.4618081","-34.5680506");
+	Coordenadas * usuario = new Coordenadas ("-58.382832","-34.600754");
+	Coordenadas * usuario2 = new Coordenadas ("-58.375580","-34.592717");
 
 	caba.verRecorridoDirecto(*usuario, *usuario2);
 

@@ -41,6 +41,8 @@ class Ciudad {
 
 		Lista<Estacion*>* obtenerEstacionesCercanas (Coordenadas ubicacionUsuario);
 
+		Lista<Estacion*>* vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada);
+
 		~Ciudad();
 };
 
