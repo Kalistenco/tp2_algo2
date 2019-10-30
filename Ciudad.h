@@ -19,6 +19,10 @@ class Ciudad {
 		Lista<Estacion*>*estacionesTren;
 		Lista<Estacion*>*bocasSubte;
 		Lista<Estacion*>*estacionesColectivo;
+		
+		bool verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada,
+				Lista<Estacion*>*estacionesLlegada,Lista<Estacion*>*estacionesPartida,
+				Lista<Estacion*>*recorridoDirecto );
 
 	public:
 		/*post lee archivos metrobus, bocas subte, ferrocarriles para crear una lista
@@ -36,6 +40,9 @@ class Ciudad {
 		Lista<Estacion*>* verColectivos(){
 			return this->estacionesColectivo;
 		}
+		void verRecorridoConCombinacion (Coordenadas puntoPartida, Coordenadas puntoLlegada);
+
+		
 
 		void verRecorridoDirecto (Coordenadas puntoPartida, Coordenadas puntoLlegada);
 
