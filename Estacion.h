@@ -33,8 +33,10 @@ class Estacion {
 		Coordenadas * verUbicacion(){
 			return this->ubicacion;
 		}
-
-        float verUbicacionLatitud(){
+		std::string verTipoTransporte(){
+			return this->tipoTransporte;
+		}
+        	float verUbicacionLatitud(){
         	return this->ubicacion->verLatitud();
         }
 		
