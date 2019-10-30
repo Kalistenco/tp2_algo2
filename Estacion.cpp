@@ -10,12 +10,18 @@
 Estacion::Estacion(std::string informacionEstacion, std::string tipoTransporte){
 	if(tipoTransporte=="ferrocarril"){
 		this->leerInformacionFerrocarril(informacionEstacion);
+		this->tipoTransporte="ferrocarril";
+
 	}
 	else if(tipoTransporte=="subte"){
 		this->leerInformacionSubte(informacionEstacion);
+		this->tipoTransporte="subte";
+
 	}
 	else if(tipoTransporte=="colectivo"){
 		this->leerInformacionColectivo(informacionEstacion);
+		this->tipoTransporte="colectivo";
+
 	}
 }
 
