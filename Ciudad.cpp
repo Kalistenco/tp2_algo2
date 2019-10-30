@@ -186,3 +186,96 @@ void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<
 
 	//return recorridoDirecto;
 }
+
+void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas puntoLlegada){
+	Lista<Estacion*>  estacionesPartida;
+	Lista<Estacion*>  estacionesLlegada;
+	Lista<Estacion*> recorridoDirecto;
+	/*carga estaciones cercanas a los puntos dados por el usuario*/
+	obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
+	obtenerEstacionesCercanas (puntoLlegada, &estacionesLlegada);
+	bool recorridoDirectoEncontrado=false;
+
+	estacionesLlegada.iniciarCursor();
+	while(estacionesLlegada.avanzarCursor()&&!recorridoDirectoEncontrado){
+		Estacion* estacionLlegada=estacionesLlegada.obtenerCursor();
+		Coordenadas ubicacionEstacionIntermedia=estacionLlegada->verUbicacion();
+
+		/*para un tipo de estacion de llegada busca las que sean del mismo tipo y sean de la misma linea
+		 -ramal-etc. Para cada estacion con esas condiciones busca las estaciones cercanas y junto a las estaciones cercanas
+		 a las de partida usa el mismo algoritmo del recorrido directo. Si lo encuentra corta el ciclo e imprime.*/
+
+		if(estacionLlegada->verTipoTransporte()=="ferrocarril"){
+			this->estacionesTren->iniciarCursor();
+			while(estacionesTren->avanzarCursor()&&!recorridoDirectoEncontrado){
+				Estacion* estacionIntermedia=estacionesTren->obtenerCursor();
+				if(estacionIntermedia->verLinea()==estacionLlegada->verLinea()){
+					Lista<Estacion*>  estacionesCercanasIntermedias;
+					this->obtenerEstacionesCercanas(estacionIntermedia->verUbicacion(),
+							&estacionesCercanasIntermedias);
+					recorridoDirectoEncontrado=this->verRecorridoDirecto(estacionIntermedia->verUbicacion()
+							,puntoPartida,
+							&estacionesCercanasIntermedias,&estacionesPartida,&recorridoDirecto );
+
+				}
+			}
+		}
+		else if(estacionLlegada->verTipoTransporte()=="subte"){
+			this->bocasSubte->iniciarCursor();
+			while(bocasSubte->avanzarCursor()&&!recorridoDirectoEncontrado){
+				Estacion* estacionIntermedia=bocasSubte->obtenerCursor();
+				if(estacionIntermedia->verLinea()==estacionLlegada->verLinea()){
+					Lista<Estacion*>  estacionesCercanasIntermedias;
+					this->obtenerEstacionesCercanas(estacionIntermedia->verUbicacion(),
+							&estacionesCercanasIntermedias);
+					recorridoDirectoEncontrado=this->verRecorridoDirecto(estacionIntermedia->verUbicacion()
+							,puntoPartida,
+							&estacionesCercanasIntermedias,&estacionesPartida,&recorridoDirecto );
+				}
+			}
+
+
+		}else if(estacionLlegada->verTipoTransporte()=="colectivo"){
+			this->estacionesColectivo->iniciarCursor();
+			while(estacionesColectivo->avanzarCursor()&&!recorridoDirectoEncontrado){
+				Estacion* estacionIntermedia=estacionesColectivo->obtenerCursor();
+				if(estacionIntermedia->verLinea()==estacionLlegada->verLinea()){
+					Lista<Estacion*>  estacionesCercanasIntermedias;
+					this->obtenerEstacionesCercanas(estacionIntermedia->verUbicacion(),
+							&estacionesCercanasIntermedias);
+					recorridoDirectoEncontrado=this->verRecorridoDirecto(estacionIntermedia->verUbicacion()
+							,puntoPartida,
+							&estacionesCercanasIntermedias,&estacionesPartida,&recorridoDirecto );
+				}
+			}
+
+		}
+
+	}
+	if(recorridoDirecto.estaVacia()){
+		std::cout<<"Todo maaaaaal"<<std::endl;
+	}
+	else{
+		recorridoDirecto.iniciarCursor();
+		while(recorridoDirecto.avanzarCursor()){
+				Estacion *prueba=recorridoDirecto.obtenerCursor();
+				std::cout<<prueba->verNombre()<<std::endl;;
+		}
+	}
+
+}
+bool Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada,
+		Lista<Estacion*>*estacionesLlegada,Lista<Estacion*>*estacionesPartida,
+		Lista<Estacion*>*recorridoDirecto ){
+
+
+	obtenerEstacionesCercanas (puntoPartida,estacionesPartida );
+	obtenerEstacionesCercanas (puntoLlegada, estacionesLlegada);
+	vincularPartidaLlegada(estacionesPartida, estacionesLlegada, recorridoDirecto);
+	return !recorridoDirecto->estaVacia();
+
+
+}
+
+
+
