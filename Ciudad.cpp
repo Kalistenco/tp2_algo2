@@ -191,6 +191,7 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 	Lista<Estacion*>  estacionesPartida;
 	Lista<Estacion*>  estacionesLlegada;
 	Lista<Estacion*> recorridoDirecto;
+	Lista<Estacion*>recorridoCombinado;
 	/*carga estaciones cercanas a los puntos dados por el usuario*/
 	obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
 	obtenerEstacionesCercanas (puntoLlegada, &estacionesLlegada);
