@@ -7,22 +7,17 @@
 
 #include <iostream>
 #include "Ciudad.h"
+#include "Menu.h"
 using namespace std;
 int main(){
 
-	// cck -34.602945, -58.370546
-	// independencia y entre rios -34.618029, -58.391618
-	// san juan y entre rios -34.623508, -58.391415
-	// estacion angel gallardo -34.602105, -58.430768
-	// plaza italia -34.581408, -58.421443
-
-	Ciudad caba;
-/*	Coordenadas llegada("-58.421443", "-34.581408");
-	Coordenadas partida("-58.370546", "-34.602945");
+	/*Ciudad caba;
+	Coordenadas partida("-58.4249824", "-34.5717485");
+	Coordenadas llegada("-58.4618081", "-34.5680506");
 	caba.verRecorridoDirecto(partida, llegada);
-	caba.verRecorridoConCombinacion(partida, llegada);
-*/
+	caba.verRecorridoConCombinacion(partida, llegada);*/
 
+<<<<<<< HEAD
 	Lista<Estacion*>*trenes=caba.verEstacionesTren();
 	cout.precision(10);
 	trenes->iniciarCursor();
@@ -30,6 +25,10 @@ int main(){
 		Estacion * trenIterado=trenes->obtenerCursor();
 		std::cout<<trenIterado->verNombre()<<std::endl;
 	}
+=======
+	Menu miMenu;
+	miMenu.iniciarMenu();
+>>>>>>> 9ea4403ea98fe49371d37a5e2a8b87e69bcf1dd3
 
 /*	Lista<Estacion*>*colectivos=caba.verColectivos();
 	cout.precision(10);
