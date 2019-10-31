@@ -30,8 +30,8 @@ class Estacion {
 
 		Estacion(std::string informacionEstacion, std::string tipoTransporte);
 
-		Coordenadas * verUbicacion(){
-			return this->ubicacion;
+		Coordenadas verUbicacion(){
+			return (*ubicacion);
 		}
 		std::string verTipoTransporte(){
 			return this->tipoTransporte;
