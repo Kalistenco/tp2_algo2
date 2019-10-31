@@ -15,15 +15,17 @@ class Coordenadas {
 		float longitud;
 
         float stringToFloat(const std::string& strToFloat)
-          {
+        {
         	float valor;
-             std::stringstream stream(strToFloat);
-             stream >> valor;
-             if (stream.fail()) {
-            	 valor=0.0;
-             }
-             return valor;
-          }
+            std::stringstream stream(strToFloat);
+            stream >> valor;
+            
+            if (stream.fail()) {
+             valor=0.0;
+            }
+            
+            return valor;
+        }
 
     public:
         Coordenadas (std::string longitud, std::string latitud){
@@ -34,24 +36,30 @@ class Coordenadas {
             //this->longitud = strtof(longitud.c_str(), 0);
         }
 
-        float distanciaMetros(float & latitudPunto2, float & longitudPunto2){
-            //convertir coordenadas a radianes
-            this->latitud = this->latitud * (PI/180);
-            this->longitud = this->longitud * (PI/180);
-            latitudPunto2 = latitudPunto2 * (PI/180);
-            longitudPunto2 = longitudPunto2 * (PI/180);
+        float distanciaMetros(Coordenadas punto2){
+            float latitud = this->latitud;
+            float longitud = this->longitud;
 
-            return RADIO_TIERRA * acos(sin(this->latitud) * sin(latitudPunto2) 
-                + cos(this->latitud) * cos(latitudPunto2) * cos (this->longitud - longitudPunto2)) * 1000;
+            //convertir coordenadas a radianes
+            latitud = this->latitud * (PI/180);
+            longitud = this->longitud * (PI/180);
+            punto2.latitud = punto2.latitud * (PI/180);
+            punto2.longitud = punto2.longitud * (PI/180);
+
+            return RADIO_TIERRA * acos(sin(latitud) * sin(punto2.latitud) 
+                + cos(latitud) * cos(punto2.latitud) * cos (longitud - punto2.longitud)) * 1000;
         }
+        
         float verLongitud(){
         	return this->longitud;
         }
+        
         float verLatitud(){
             return this->latitud;
         }
 
-        ~Coordenadas(){};
+        ~Coordenadas(){
+        };
 };
 
 #endif
