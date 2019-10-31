@@ -41,16 +41,23 @@ class Ciudad {
 		Lista<Estacion*>* verColectivos(){
 			return this->estacionesColectivo;
 		}
-		void verRecorridoConCombinacion (Coordenadas puntoPartida, Coordenadas puntoLlegada);
 
-		
+		void cargarDatos (Lista<Estacion*> * medioDeTransporte, Lista<std::string> datos, std::string tipoDeTransporte);
+
+		void verRecorridoConCombinacion (Coordenadas puntoPartida, Coordenadas puntoLlegada);
 
 		void verRecorridoDirecto (Coordenadas puntoPartida, Coordenadas puntoLlegada);
 
 		void obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,Lista<Estacion*>*estacionesCercanas);
 
+		void cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte, Lista<Estacion*>* datosCargados, Coordenadas ubicacion);
+
+
 		void vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada
 				,Lista<Estacion*>*recorrido);
+
+		void borrarDatos(Lista<Estacion*>* medioDeTransporte);
+
 		~Ciudad();
 };
 
