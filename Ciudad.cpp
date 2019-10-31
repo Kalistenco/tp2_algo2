@@ -216,6 +216,17 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 					recorridoDirectoEncontrado=this->verRecorridoDirecto(estacionIntermedia->verUbicacion()
 							,puntoPartida,
 							&estacionesCercanasIntermedias,&estacionesPartida,&recorridoDirecto );
+					if(recorridoDirectoEncontrado){
+						recorridoCombinado.agregar(recorridoDirecto);
+						if(estacionLlegada->verNombre()!=estacionIntermedia->verNombre()){
+							recorridoCombinado.agregar(estacionIntermedia);
+							recorridoCombinado.agregar(estacionLlegada);
+						}
+						else{
+							recorridoCombinado.agregar(estacionIntermedia);
+
+						}
+					}
 
 				}
 			}
@@ -231,6 +242,17 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 					recorridoDirectoEncontrado=this->verRecorridoDirecto(estacionIntermedia->verUbicacion()
 							,puntoPartida,
 							&estacionesCercanasIntermedias,&estacionesPartida,&recorridoDirecto );
+					if(recorridoDirectoEncontrado){
+						recorridoCombinado.agregar(recorridoDirecto);
+						if(estacionLlegada->verNombre()!=estacionIntermedia->verNombre()){
+							recorridoCombinado.agregar(estacionIntermedia);
+							recorridoCombinado.agregar(estacionLlegada);
+						}
+						else{
+							recorridoCombinado.agregar(estacionIntermedia);
+
+						}
+					}
 				}
 			}
 
@@ -246,20 +268,34 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 					recorridoDirectoEncontrado=this->verRecorridoDirecto(estacionIntermedia->verUbicacion()
 							,puntoPartida,
 							&estacionesCercanasIntermedias,&estacionesPartida,&recorridoDirecto );
+					if(recorridoDirectoEncontrado){
+						recorridoCombinado.agregar(recorridoDirecto);
+						if(estacionLlegada->verNombre()!=estacionIntermedia->verNombre()){
+							recorridoCombinado.agregar(estacionIntermedia);
+							recorridoCombinado.agregar(estacionLlegada);
+						}
+						else{
+							recorridoCombinado.agregar(estacionIntermedia);
+
+						}
+					}
 				}
 			}
 
 		}
 
 	}
-	if(recorridoDirecto.estaVacia()){
+	if(recorridoCombinado.estaVacia()){
 		std::cout<<"Todo maaaaaal"<<std::endl;
 	}
 	else{
-		recorridoDirecto.iniciarCursor();
-		while(recorridoDirecto.avanzarCursor()){
-				Estacion *prueba=recorridoDirecto.obtenerCursor();
-				std::cout<<prueba->verNombre()<<std::endl;;
+		std::cout.precision(10);
+		recorridoCombinado.iniciarCursor();
+		while(recorridoCombinado.avanzarCursor()){
+			Estacion *prueba=recorridoCombinado.obtenerCursor();
+			std::cout<<prueba->verTipoTransporte()<<" | "<<prueba->verLinea()
+			<<" | "<<prueba->verNombre()<<prueba->verUbicacionLatitud()
+			<<" | "<<prueba->verUbicacionLongitud()<<std::endl;
 		}
 	}
 
