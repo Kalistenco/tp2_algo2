@@ -32,17 +32,17 @@ Ciudad::Ciudad(){
 
 	cargarDatos(this->estacionesColectivo, registrosEstacionesColectivo, "colectivo");
 	cargarDatos(this->bocasSubte, registrosBocasSubte, "subte");
-	cargarDatos(this->estacionesTren, registrosEstacionesTren, "tren");
+	cargarDatos(this->estacionesTren, registrosEstacionesTren, "ferrocarril");
 }
 
 void Ciudad::cargarDatos(Lista<Estacion*>* medioDeTransporte, Lista<std::string> datos, std::string tipoDeTransporte){
 	
 	datos.iniciarCursor();
 
-	while(medioDeTransporte->avanzarCursor()) {
+	while(datos.avanzarCursor()) {
 		std::string infoEstacion = datos.obtenerCursor();
 		Estacion* nuevaEstacion = new Estacion (infoEstacion, tipoDeTransporte);
-		medioDeTransporte->agregar(nuevaEstacion); 
+		medioDeTransporte->agregar(nuevaEstacion);
 	}
 }
 
