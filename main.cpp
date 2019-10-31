@@ -17,10 +17,20 @@ int main(){
 	// plaza italia -34.581408, -58.421443
 
 	Ciudad caba;
-	Coordenadas llegada("-58.421443", "-34.581408");
+/*	Coordenadas llegada("-58.421443", "-34.581408");
 	Coordenadas partida("-58.370546", "-34.602945");
 	caba.verRecorridoDirecto(partida, llegada);
 	caba.verRecorridoConCombinacion(partida, llegada);
+*/
+
+	Lista<Estacion*>*trenes=caba.verEstacionesTren();
+	cout.precision(10);
+	trenes->iniciarCursor();
+	while(trenes->avanzarCursor()){
+		Estacion * trenIterado=trenes->obtenerCursor();
+		std::cout<<trenIterado->verLinea()<<std::endl;
+			std::cout<<trenIterado->verLinea()<<std::endl;
+	}
 
 
 
