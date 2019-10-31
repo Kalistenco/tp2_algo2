@@ -24,7 +24,8 @@ class Ciudad {
 		bool verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada,
 				Lista<Estacion*>*estacionesLlegada,Lista<Estacion*>*estacionesPartida,
 				Lista<Estacion*>*recorridoDirecto );
-
+		bool buscarPuntoIntermedio(Lista<Estacion*>*estaciones, Estacion* llegada, Coordenadas puntoPartida,
+				Lista<Estacion*>*recorridoCombinado, Lista<Estacion*>*partida);
 	public:
 		/*post lee archivos metrobus, bocas subte, ferrocarriles para crear una lista
 		 * de estaciones por tipo de transporte
