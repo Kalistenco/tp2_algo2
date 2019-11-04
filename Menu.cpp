@@ -83,7 +83,22 @@ void Menu::iniciarMenu(){
 	}
 }
 
+/*input: 2 entero como rango de entero buscado
+ * output: devuelve entero buscado en ese rango*/
+/*int opcionValida(int min,int max){
+	int opcion;
+	char opc;
+	std::cout <<"Opcion: ";
+	std::cin>> opc;
+	if (!isdigit(opc) || opc < (char)min+'0' || opc > (char)max+'0'){
+		std::cout<<"Ingrese una opcion valida: "<<std::endl;
+		opcionValida(min, max);
+	}
+	else{
+		opcion=(int)opc-'0';
+	}
+	return opcion;
+}
 
 
-
-
+*/
