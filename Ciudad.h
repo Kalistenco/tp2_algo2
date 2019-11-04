@@ -22,10 +22,20 @@ class Ciudad {
 		Lista<Estacion*>*estacionesColectivo;
 		
 		bool verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada,
-				Lista<Estacion*>*estacionesLlegada,Lista<Estacion*>*estacionesPartida,
+
 				Lista<Estacion*>*recorridoDirecto );
+
 		bool buscarPuntoIntermedio(Lista<Estacion*>*estaciones, Estacion* llegada, Coordenadas puntoPartida,
-				Lista<Estacion*>*recorridoCombinado, Lista<Estacion*>*partida);
+				Lista<Estacion*>*recorridoCombinado);
+
+		void borrarDatos(Lista<Estacion*>* medioDeTransporte);
+		void cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte, Lista<Estacion*>* datosCargados, Coordenadas ubicacion);
+
+
+		void vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada
+				,Lista<Estacion*>*recorrido);
+		void leerRecorrido(Lista<Estacion*>*recorrido);
+
 	public:
 		/*post lee archivos metrobus, bocas subte, ferrocarriles para crear una lista
 		 * de estaciones por tipo de transporte
@@ -51,13 +61,7 @@ class Ciudad {
 
 		void obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,Lista<Estacion*>*estacionesCercanas);
 
-		void cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte, Lista<Estacion*>* datosCargados, Coordenadas ubicacion);
 
-
-		void vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada
-				,Lista<Estacion*>*recorrido);
-
-		void borrarDatos(Lista<Estacion*>* medioDeTransporte);
 
 		~Ciudad();
 };
