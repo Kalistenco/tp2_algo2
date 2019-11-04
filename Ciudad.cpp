@@ -175,5 +175,44 @@ bool Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLleg
 
 }
 
+bool Ciudad::buscarPuntoIntermedio(Lista<Estacion*>*estaciones, Estacion* llegada, Coordenadas puntoPartida,
+		Lista<Estacion*>*recorridoCombinado,  Lista<Estacion*>*partida){
+		bool recorridoDirectoEncontrado=false;
+
+		estaciones->iniciarCursor();
+		while(estaciones->avanzarCursor()&&!recorridoDirectoEncontrado){
+			Estacion* estacionIntermedia=estaciones->obtenerCursor();
+			if(estacionIntermedia->verLinea()==llegada->verLinea()){
+				Lista<Estacion*>  estacionesCercanasIntermedias;
+				Lista<Estacion*> recorridoDirecto;
+
+				Coordenadas ubicacionIntermedia=estacionIntermedia->verUbicacion();
+				/*busco estaciones cercanas a la posible estacion intermedia del recorrido*/
+				this->obtenerEstacionesCercanas(ubicacionIntermedia, &estacionesCercanasIntermedias);
+				/*Con las estaciones cercanas al punto intermedio busco si alguna esta en el tipo de trasnporte
+				 * y linea que las estaciones de partida.
+				 * Es decir busco un recorrido directo entr esas 2 listas de estaciones*/
+				recorridoDirectoEncontrado=this->verRecorridoDirecto(ubicacionIntermedia
+						,puntoPartida,
+						&estacionesCercanasIntermedias,partida,&recorridoDirecto );
+				/*si resulta que la estacion intermedia es la misma que la de llegada, entonces solo
+				 * se agrega una vez al recorrido*/
+				if(recorridoDirectoEncontrado){
+					recorridoCombinado->agregar(recorridoDirecto);
+					if((llegada->verUbicacionLatitud()!=estacionIntermedia->verUbicacionLatitud())
+							&&llegada->verUbicacionLongitud()!=estacionIntermedia->verUbicacionLongitud()){
+						recorridoCombinado->agregar(estacionIntermedia);
+						recorridoCombinado->agregar(llegada);
+					}
+					else{
+						recorridoCombinado->agregar(llegada);
+					}
+				}
+			}
+		}
+		return recorridoDirectoEncontrado;
+
+}
+
 
 
