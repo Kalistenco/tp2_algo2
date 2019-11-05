@@ -7,7 +7,10 @@
 #include<iostream>
 #include"Menu.h"
 #include "Coordenadas.h"
+#include <string>
 using namespace std;
+
+
 Menu::Menu(){
 	miCiudad = new Ciudad();
 }
@@ -15,15 +18,13 @@ Menu::Menu(){
 void Menu::iniciarMenu(){
 
 	string auxLatitudOrigen,auxLatitudDestino,auxLongitudOrigen,auxLongitudDestino;
-	int opcionMenu;
+	char opcionMenu ;
 	bool salir = false;
 
 	cout<<"   -- CIUDAD DIGITAL EN MOVIMIENTO V1.0 --"<<endl;
 	cout<<""<<endl;
 
 	while(salir != true){
-
-
 
 		cout<<""<<endl;
 		cout<<"  ELIJA TIPO DE RECORIDO  "<<endl;
@@ -32,11 +33,13 @@ void Menu::iniciarMenu(){
 		cout<<"2 - Recorrido con conbinaciones"<<endl;
 		cout<<"0 - salir"<<endl;
 		cout<<""<<endl;
-		cout<<"Ingrese su opcion: ";
+		cout <<"Ingrese su opcion: ";
 		cin>>opcionMenu;
-		cout<<""<<endl;
+		cout <<""<<endl;
+		//opcionMenu = this->opcionValida(0,2);
 
-		if(opcionMenu==1 || opcionMenu==2 ){
+		if(opcionMenu=='1' || opcionMenu=='2'){
+
 			cout<<"ORIGEN"<<endl;
 			cout<<"   Ingrese longitud de origen: ";
 			cin>>auxLongitudOrigen;
@@ -48,42 +51,38 @@ void Menu::iniciarMenu(){
 			cout<<"   Ingrese latitud de destino: ";
 			cin>>auxLatitudDestino;
 		}
-
-		Coordenadas* origen = new Coordenadas(auxLongitudOrigen,auxLatitudOrigen);
-		Coordenadas* destino = new Coordenadas(auxLongitudDestino,auxLatitudDestino);
+		Coordenadas origen(auxLongitudOrigen,auxLatitudOrigen);
+		Coordenadas destino(auxLongitudDestino,auxLatitudDestino);
 
 		switch (opcionMenu){
-			case 1:
+			case '0':
+				cout<<"\n PROGRAMA FINALIZADO "<<endl;
+				salir = true;
+			break;
+			case '1':
 				cout<<""<<endl;
 				cout<<" RECORRIDO SIN CONBINACIONES "<<endl;
 				cout<<""<<endl;
-				this->miCiudad->verRecorridoDirecto(*origen,*destino);
+				this->miCiudad->verRecorridoDirecto(origen,destino);
 				cout<<""<<endl;
 			break;
-			case 2:
+			case '2':
 				cout<<""<<endl;
 				cout<<" RECORRIDO CON CONBINACIONES "<<endl;
 				cout<<""<<endl;
-				this->miCiudad->verRecorridoConCombinacion(*origen,*destino);
+				this->miCiudad->verRecorridoConCombinacion(origen,destino);
 				cout<<""<<endl;
+			break;
 
-			break;
-			case 0:
-				salir = true;
-				cout<<" --PROGRAMA FIANALIZADO--"<<endl;
-			break;
 			default:
-				cout<<""<<endl;
-				cout<<" --OPCION NO VALIDA-- "<<endl;
-				cout<<""<<endl;
-
+				cout<<" OPCION NO VALIDA, INGRESE DE NUEVO SU OPCION "<<endl;
 		}
-		delete origen;
-		delete destino;
 	}
 }
 
-
+Menu::~Menu(){
+	delete this->miCiudad;
+}
 
 
 
