@@ -85,6 +85,8 @@ void Menu::iniciarMenu(){
 
 /*input: 2 entero como rango de entero buscado
  * output: devuelve entero buscado en ese rango*/
+/*ej: int opcion=opcionValida(1,4);;
+va a devolver un entero entre 1 y 4, es recursiva, asi que va a estar en bucle hasta que el usuario ingrese una opcion en ese rango */
 /*int opcionValida(int min,int max){
 	int opcion;
 	char opc;
