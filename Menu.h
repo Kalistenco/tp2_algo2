@@ -18,6 +18,8 @@ public:
 
 	void iniciarMenu();
 
+	~Menu();
+
 };
 
 
