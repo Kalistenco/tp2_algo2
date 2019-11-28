@@ -9,6 +9,7 @@
 #include "Ciudad.h"
 #include "Coordenadas.h"
 #include "Estacion.h"
+#include <vector>
 
 Ciudad::Ciudad(){
 
@@ -140,25 +141,26 @@ void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<
  *  si no existe busca e imprime un recorrido con combinacion*/
 
 void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas puntoLlegada){
-	Lista<Estacion*>  estacionesPartida;
-	Lista<Estacion*>	recorridoCombinado;
-	Lista<Estacion*>	recorridoDirectoSupuesto;
+	Lista<Estacion*>estacionesPartida;
+	Lista<Estacion*>recorridoCombinado1;
+	Lista<Estacion*>recorridoDirectoSupuesto;
+	Lista<Estacion*>recorridoIntermedio;
+	Lista<Estacion*>recorridoCombinado;
+	unsigned int distanciaMinima=0;
+	Lista<Estacion*>recorridoMinimo;
 
-	Lista<Estacion*>*recorridoMinimo=NULL;
-
-	bool existeRecorridoDirecto=false;//this->verRecorridoDirecto(puntoPartida, puntoLlegada,&recorridoDirectoSupuesto);
+	bool existeRecorridoDirecto=this->verRecorridoDirecto(puntoPartida, puntoLlegada,&recorridoDirectoSupuesto);
 	if(existeRecorridoDirecto){
-		recorridoCombinado.agregar(recorridoDirectoSupuesto);
+		recorridoCombinado1.agregar(recorridoDirectoSupuesto);
 	}
 	else{
 		obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
 		bool recorridoCombinadoEncontrado=false;
 		estacionesPartida.iniciarCursor();
-		while(estacionesPartida.avanzarCursor()&&!recorridoCombinadoEncontrado){
+		while(estacionesPartida.avanzarCursor()){
 			Estacion* estacionPartida=estacionesPartida.obtenerCursor();
-			Lista<Estacion*>recorridoIntermedio;
 			if(estacionPartida->verTipoTransporte()=="ferrocarril"){
-				recorridoCombinadoEncontrado=buscarPuntoIntermedio(this->estacionesTren, estacionPartida,puntoLlegada,&recorridoIntermedio);
+				recorridoCombinadoEncontrado=buscarPuntoIntermedio(this->estacionesTren,estacionPartida,puntoLlegada,&recorridoIntermedio);
 
 			}else if(estacionPartida->verTipoTransporte()=="subte"){
 				recorridoCombinadoEncontrado=buscarPuntoIntermedio(this->bocasSubte, estacionPartida, puntoLlegada,&recorridoIntermedio);
@@ -170,41 +172,52 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 			if(recorridoCombinadoEncontrado){
 				recorridoCombinado.agregar(recorridoIntermedio);
 				recorridoCombinado.agregar(estacionPartida,1);
-				std::cout<<"tiene tantos elementos el recorridoCombinado "<<recorridoCombinado.contarElementos()<<std::endl;
+				std::cout<<"tiene tantos elementos el recorridoCombinado "<<recorridoCombinado.contarElementos()<<
+						" | "<<this->verDistancia(&recorridoCombinado)<<std::endl;
+				//solo de prueba la siguiente linea
 				this->leerRecorrido(&recorridoCombinado);
-			}/*
-			if(recorridoMinimo!=NULL){
-				//calcular si es minima distancia y guardar nuevo recorrido en recorridoMinimo
+			}
+
+			if(!recorridoMinimo.estaVacia()){
+				//si ya hay un recorridoMinimo calculo y compara distancias
+				unsigned int distancia=this->verDistancia(&recorridoCombinado);
+				if(distancia<distanciaMinima){
+					//guardar en recorridoMinimo los elementos de recorridoCombinado borrando los de
+					//recorridoMinimo anterior ¿se borran las referencias guardadas? probar y pasar a copia
+					//de estaciones en ese caso;
+					recorridoMinimo=recorridoCombinado;
+					distanciaMinima=distancia;
+				}
 			}else{
-				recorridoMinimo=&recorridoCombinado;
-			}*/
-			//recorridoCombinadoEncontrado=!(recorridoIntermedio.estaVacia());
+				//si recorridoMinimo esta vacia
+				recorridoMinimo.agregar(recorridoCombinado);
+				distanciaMinima=this->verDistancia(&recorridoMinimo);
+			}
 		}
 	}
-	/*
-	if(!recorridoMinimo->estaVacia()){
-		this->leerRecorrido(recorridoMinimo);
+
+	if(!recorridoMinimo.estaVacia()){
+		this->leerRecorrido(&recorridoMinimo);
 	}
 	else{
 		std::cout<<"No existe un recorrido con una combinacion..."<<std::endl;
-	}*/
-}
-bool Ciudad::esMinimo(Lista<Estacion*>*minimo, Lista<Estacion*>&aEvaluar){
-	minimo->iniciarCursor();
-	while(minimo->avanzarCursor()){
-		minimo->obtenerCursor()->verUbicacion();
 	}
+}
 
-	Coordenadas origen=minimo->obtener(1)->verUbicacion();
-	Coordenadas intermedio=minimo->obtener(2)->verUbicacion();
-	Coordenadas destino=minimo->obtener(3)->verUbicacion();
-	unsigned int distancia=origen.distanciaMetros(intermedio)+intermedio.distanciaMetros(destino);
-
-	Coordenadas origenEvaluado=aEvaluar.obtener(1)->verUbicacion();
-	Coordenadas intermedioEvaluado=aEvaluar.obtener(2)->verUbicacion();
-	Coordenadas destinoEvaluado=aEvaluar.obtener(3)->verUbicacion();
-	unsigned int distanciaEvaluada=origenEvaluado.distanciaMetros(intermedio)+intermedioEvaluado.distanciaMetros(destinoEvaluado);
-return distancia<distanciaEvaluada;
+unsigned int Ciudad::verDistancia(Lista<Estacion*>*recorrido){
+	unsigned int distancia=0;
+	std::vector<Coordenadas> posicionesEstaciones;
+	recorrido->iniciarCursor();
+	while(recorrido->avanzarCursor()){
+		Coordenadas posicionEstacion=recorrido->obtenerCursor()->verUbicacion();
+		posicionesEstaciones.push_back(posicionEstacion);
+	}
+	for(unsigned int i=0; i<posicionesEstaciones.size();i++){
+		if((i+1)<=posicionesEstaciones.size()){
+			distancia+=posicionesEstaciones[i].distanciaMetros(posicionesEstaciones[i+1]);
+		}
+	}
+	return distancia;
 }
 /*post: Imprime algunos campos de Lista<Estacion*> *recorrido
  * por ej: tipo de transporte|linea/ramal que corresponde|nombre de parada/estacion|coordenadas geograficas.*/
@@ -241,10 +254,10 @@ bool Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLleg
 bool Ciudad::buscarPuntoIntermedio(Lista<Estacion*>*estacionesARevisar, Estacion* estacionPartida, Coordenadas puntoLlegada,
 		Lista<Estacion*>*recorridoCombinado){
 	bool recorridoDirectoEncontrado=false;
-	Estacion* estacionIntermedia;
+
 	estacionesARevisar->iniciarCursor();
 	while(estacionesARevisar->avanzarCursor()&&!recorridoDirectoEncontrado){
-		estacionIntermedia=estacionesARevisar->obtenerCursor();
+		Estacion* estacionIntermedia=estacionesARevisar->obtenerCursor();
 		if(estacionIntermedia->verLinea()==estacionPartida->verLinea()&&estacionIntermedia!=estacionPartida){
 			Lista<Estacion*> recorridoDirecto;
 			Coordenadas ubicacionIntermedia=estacionIntermedia->verUbicacion();
