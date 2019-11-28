@@ -75,6 +75,20 @@ template<class T> class Lista {
          * post: cambia el elemento en la posición indicada por el
          *       elemento dado.
          */
+            /*pre: listas del mismo tamaño*/
+        /*post: intercambia los elementos de la lista de argumento en orden de posicion*/
+        void operator =(Lista<T>&otraLista){
+        	unsigned int pos=1;
+        	while(otraLista.avanzarCursor()){
+            	if(pos>this->contarElementos()){
+            		this->agregar(otraLista.obtenerCursor(),this->contarElementos()+1);
+            	}
+            	else{
+            		this->asignar(otraLista.obtenerCursor(), pos);
+            		pos++;
+            	}
+        	}
+        }
         void asignar(T elemento, unsigned int posicion);
 
         /*
