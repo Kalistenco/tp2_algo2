@@ -25,6 +25,7 @@ Estacion::Estacion(std::string informacionEstacion, std::string tipoTransporte){
 		this->tipoTransporte="colectivo";
 
 	}
+	this->adyacentes=new Lista<Estacion*>;
 }
 
 void Estacion::leerInformacionSubte(std::string informacion){

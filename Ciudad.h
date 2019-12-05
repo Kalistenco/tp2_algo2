@@ -20,18 +20,21 @@ class Ciudad {
 		Lista<Estacion*>*estacionesTren;
 		Lista<Estacion*>*bocasSubte;
 		Lista<Estacion*>*estacionesColectivo;
-		
-		bool verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada,
+		Lista<Estacion*>paradasColectivoAux;
+	private:
+		bool hayCombinacion(Estacion *intermedia, Coordenadas llegada,
+				Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada);
+		void buscarEstacionIntermedia(Lista<Estacion*>*estaciones, Estacion*partida, Coordenadas puntoLlegada,
+				Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada);
+		void cargarAdyacentesPorMedioTransporte(Lista<Estacion*>*medioTransporte,
+				Estacion* estacionAbuscarAdyacencia);
 
-				Lista<Estacion*>*recorridoDirecto );
-
-		bool buscarPuntoIntermedio(Lista<Estacion*>*estaciones, Estacion* llegada, Coordenadas puntoPartida,
-				Lista<Estacion*>*recorridoCombinado);
+		void obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,
+			Lista<Estacion*>*estacionesCercanas, Estacion* intermedia);
 
 		void borrarDatos(Lista<Estacion*>* medioDeTransporte);
 		void cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte,
-				Lista<Estacion*>* datosCargados, Coordenadas ubicacion);
-
+			Lista<Estacion*>* datosCargados, Coordenadas ubicacion);
 
 		void vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada
 				,Lista<Estacion*>*recorrido);
@@ -41,8 +44,13 @@ class Ciudad {
 		 * nombre de parada/estacion|coordenadas geograficas.*/
 
 		void leerRecorrido(Lista<Estacion*>*recorrido);
+		/*post: agrega en estacionesCercanas las estaciones/paradas con un rango de 250m a la ubicacionUsuario
+		 * como pueden ser bocas de subte, paradas de colectivo, estaciones de tren.. */
+		void obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,Lista<Estacion*>*estacionesCercanas);
+
 
 		unsigned int verDistancia(Lista<Estacion*>*recorrido);
+		void cargarAdyacentes();
 	public:
 		/*post: crea ciudad con datos de transportes de archivos csv
 		 */
@@ -68,10 +76,6 @@ class Ciudad {
 		 * post: busca e imprime un posible camino entre esos puntos cuando solamente los une un medio de transporte
 		 * */
 		void verRecorridoDirecto (Coordenadas puntoPartida, Coordenadas puntoLlegada);
-		/*post: agrega en estacionesCercanas las estaciones/paradas con un rango de 250m a la ubicacionUsuario
-		 * como pueden ser bocas de subte, paradas de colectivo, estaciones de tren.. */
-		void obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,Lista<Estacion*>*estacionesCercanas);
-
 
 
 		~Ciudad();
