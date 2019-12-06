@@ -24,7 +24,7 @@ void Menu::iniciarMenu(){
 	cout<<"   -- CIUDAD DIGITAL EN MOVIMIENTO V1.0 --"<<endl;
 	cout<<""<<endl;
 
-	while(salir != true){
+	while(!salir){
 
 		cout<<""<<endl;
 		cout<<"  ELIJA TIPO DE RECORIDO  "<<endl;
@@ -51,8 +51,13 @@ void Menu::iniciarMenu(){
 			cout<<"   Ingrese latitud de destino: ";
 			cin>>auxLatitudDestino;
 		}
-		Coordenadas origen(auxLongitudOrigen,auxLatitudOrigen);
-		Coordenadas destino(auxLongitudDestino,auxLatitudDestino);
+		Coordenadas origen(auxLongitudOrigen, auxLatitudOrigen);
+		//Coordenadas origen1("-58.3972499423143", "-34.5878038772456");
+		//std::cout<<"distancia de 2 puntos iguales"<<origen.distanciaMetros(origen1)<<std::endl;
+		Coordenadas destino(auxLongitudDestino, auxLatitudDestino);
+
+		//Coordenadas origen(auxLongitudOrigen,auxLatitudOrigen);
+		//Coordenadas destino(auxLongitudDestino,auxLatitudDestino);
 
 		switch (opcionMenu){
 			case '0':

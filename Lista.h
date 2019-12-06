@@ -77,8 +77,6 @@ template<class T> class Lista {
          */
         void asignar(T elemento, unsigned int posicion);
 
-        void asignar(Lista<T> &otraLista);
-
         /*
          * pre : posición pertenece al intervalo: [1, contarElementos()]
          * post: remueve de la Lista el elemento en la posición indicada.
@@ -211,17 +209,6 @@ template<class T> void Lista<T>::asignar(T elemento, unsigned int posicion) {
     }
 }
 
-template<class T> void Lista<T>::asignar(Lista<T> &otraLista) {
-
-    otraLista.iniciarCursor();
-    unsigned int i = 0;
-
-    while(otraLista.avanzarCursor()){
-        this->agregar(otraLista.obtenerCursor(), i);
-        i++;
-    }
-}
-
 template<class T> void Lista<T>::remover(unsigned int posicion) {
 
     if ((posicion > 0) && (posicion <= this->tamanio)) {
@@ -302,4 +289,4 @@ template<class T> Nodo<T>* Lista<T>::obtenerNodo(unsigned int posicion) {
     return actual;
 }
 
-#endif /* LISTA_H_ */
+#endif

@@ -9,13 +9,12 @@
 #include "Ciudad.h"
 #include "Coordenadas.h"
 #include "Estacion.h"
-
 Ciudad::Ciudad(){
 
 	this->estacionesTren = new Lista<Estacion*>;
 	this->bocasSubte = new Lista<Estacion*>;
 	this->estacionesColectivo = new Lista<Estacion*>;
-
+	this->recorridoMinimo= new Recorrido;
 	Archivo trenes(ARCHIVO_TRENES);
 	Lista<std::string> registrosEstacionesTren;
 	trenes.leerArchivo(registrosEstacionesTren);
@@ -33,8 +32,72 @@ Ciudad::Ciudad(){
 	cargarDatos(this->estacionesColectivo, registrosEstacionesColectivo, "colectivo");
 	cargarDatos(this->bocasSubte, registrosBocasSubte, "subte");
 	cargarDatos(this->estacionesTren, registrosEstacionesTren, "ferrocarril");
+	//this->paradasColectivoAux.agregar(*estacionesColectivo);
+	this->cargarAdyacentes();
 }
+void Ciudad::cargarAdyacentesPorMedioTransporte(Lista<Estacion*>*medioTransporte,
+		Estacion* estacionAbuscarAdyacencia){
 
+	Coordenadas ubicacion=estacionAbuscarAdyacencia->verUbicacion();
+	unsigned int distancia=0;
+	medioTransporte->iniciarCursor();
+	while(medioTransporte->avanzarCursor()){
+		Estacion* posibleAdyacencia=medioTransporte->obtenerCursor();
+		distancia =ubicacion.distanciaMetros(posibleAdyacencia->verUbicacion());
+		/*si es la misma estacion la distancia a si misma debe ser 0 y no la considero*/
+		if(distancia < 250&&distancia>0) {
+			/*si es una boca distinta pero de la misma estacion no la considero*/
+			if(estacionAbuscarAdyacencia->verNombre()!=medioTransporte->
+					obtenerCursor()->verNombre()){
+				//std::cout<<estacionAbuscarAdyacencia->verNombre()<<medioTransporte->obtenerCursor()->verNombre()<<std::endl;
+				estacionAbuscarAdyacencia->agregarAdyacente(medioTransporte->obtenerCursor());
+			}
+		}
+	}
+
+
+}
+/*carga a cada Estacion sus estaciones cercanas de cualquier tipo*/
+void Ciudad::cargarAdyacentes(){
+	//coste de O(n2)
+	//auxiliar
+	Lista<Estacion*>subte;
+	subte.agregar(*bocasSubte);
+	Lista<Estacion*>trenes;
+	trenes.agregar(*estacionesTren);
+	//Lista<Estacion*>colectivos;
+
+	this->estacionesTren->iniciarCursor();
+	while(estacionesTren->avanzarCursor()){
+
+		Estacion* iterando=estacionesTren->obtenerCursor();
+		//Coordenadas ubicacion=iterando->verUbicacion();
+		this->cargarAdyacentesPorMedioTransporte(&subte, iterando);
+		this->cargarAdyacentesPorMedioTransporte(&trenes, iterando);
+		this->cargarAdyacentesPorMedioTransporte(this->estacionesColectivo, iterando);
+	}
+
+	this->bocasSubte->iniciarCursor();
+	while(bocasSubte->avanzarCursor()){
+
+		Estacion* iterando=bocasSubte->obtenerCursor();
+		//Coordenadas ubicacion=iterando->verUbicacion();
+		this->cargarAdyacentesPorMedioTransporte(&trenes, iterando);
+		this->cargarAdyacentesPorMedioTransporte(this->estacionesColectivo, iterando);
+		this->cargarAdyacentesPorMedioTransporte(&subte, iterando);
+	}
+
+	this->estacionesColectivo->iniciarCursor();
+	while(estacionesColectivo->avanzarCursor()){
+
+		Estacion* iterando=estacionesColectivo->obtenerCursor();
+		Coordenadas ubicacion=iterando->verUbicacion();
+		this->cargarAdyacentesPorMedioTransporte(&trenes, iterando);
+		this->cargarAdyacentesPorMedioTransporte(&subte, iterando);
+		//this->cargarAdyacentesPorMedioTransporte(&paradasColectivoAux, iterando);
+	}
+
+}
 void Ciudad::cargarDatos(Lista<Estacion*>* medioDeTransporte, Lista<std::string> datos, std::string tipoDeTransporte){
 	
 	datos.iniciarCursor();
@@ -63,7 +126,9 @@ void Ciudad::borrarDatos(Lista<Estacion*>* medioDeTransporte){
 
 	delete medioDeTransporte;
 }
-
+/*pre: coordenadas geograficas no vacias y de caba
+ * post: busca e imprime un posible camino entre esos puntos cuando solamente los une un medio de transporte
+ * */
 void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada){
 	Lista<Estacion*>  estacionesPartida;
 	Lista<Estacion*>  estacionesLlegada;
@@ -81,16 +146,21 @@ void Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLleg
 	}
 }
 
+/*pre: Coordenadas geograficas de caba y Lista<Estacion*>* estacionesCercanas vacia.*/
+/*post: agrega en estacionesCercanas las estaciones/paradas con un rango de 250m a la ubicacionUsuario
+ * como pueden ser bocas de subte, paradas de colectivo, estaciones de tren.. */
 
 void Ciudad::obtenerEstacionesCercanas (Coordenadas ubicacionUsuario,
 	Lista<Estacion*>*estacionesCercanas){
-	
-	cargarEstacionesCercanas(this->bocasSubte, estacionesCercanas, ubicacionUsuario);
+
+	cargarEstacionesCercanas(bocasSubte, estacionesCercanas, ubicacionUsuario);
 	cargarEstacionesCercanas(this->estacionesColectivo, estacionesCercanas, ubicacionUsuario);
 	cargarEstacionesCercanas(this->estacionesTren, estacionesCercanas, ubicacionUsuario);
 }
 
-void Ciudad::cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte, Lista<Estacion*>* datosCargados, Coordenadas ubicacion) {
+
+void Ciudad::cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte
+		,Lista<Estacion*>* datosCargados, Coordenadas ubicacion) {
 
 	medioDeTransporte->iniciarCursor();
 
@@ -98,12 +168,15 @@ void Ciudad::cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte, Lista
 		Coordenadas ubicacionEstacion = medioDeTransporte->obtenerCursor()->verUbicacion();
 
 		if(ubicacionEstacion.distanciaMetros(ubicacion) < 250) {
-			Estacion * trenIterado = medioDeTransporte->obtenerCursor();
-			datosCargados->agregar(trenIterado);
+			Estacion * estacion = medioDeTransporte->obtenerCursor();
+			datosCargados->agregar(estacion);
 		}
 	}
+
 }
 
+/*pre: Lista<Estacion*>* estacionesPartida y estacionesLlegada no vacias y Lista<Estacion*>* recorridoDirecto vacia*/
+/*post:carga en recorridoDirecto las estaciones/paradas que tiene en comun linea/ramal dependiendo tipo de transporte*/
 void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<Estacion*> * estacionesLlegada,
 	Lista<Estacion*>*recorridoDirecto){
 
@@ -111,7 +184,7 @@ void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<
 
 	estacionesPartida->iniciarCursor();
 
-	while(estacionesPartida->avanzarCursor() && recorridoEncontrado == false){
+	while(estacionesPartida->avanzarCursor() && !recorridoEncontrado){
 
 		Estacion *estacionIterada=estacionesPartida->obtenerCursor();
 		estacionesLlegada->iniciarCursor();
@@ -120,7 +193,7 @@ void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<
 
 			Estacion* estacionLlegada=estacionesLlegada->obtenerCursor();
 
-			if(estacionIterada->verLinea() == estacionLlegada->verLinea() && recorridoEncontrado == false){
+			if(estacionIterada->verLinea() == estacionLlegada->verLinea() && !recorridoEncontrado){
 
 				recorridoDirecto->agregar(estacionesPartida->obtenerCursor());
 				recorridoDirecto->agregar(estacionesLlegada->obtenerCursor());
@@ -129,55 +202,182 @@ void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<
 		}
 	}
 }
-/*post:
- * imprime si existe un recorrido directo entre las coordenadas pedidas, si no existe busca e imprime un recorrido con combinacion*/
+/*pre: Coordenadas geograficas de caba
+ * post:imprime si existe un recorrido directo entre las coordenadas pedidas,
+ *  si no existe busca e imprime un recorrido con combinacion*/
+bool Ciudad::hayCombinacion(Estacion *intermedia, Coordenadas llegada,
+		 Lista<Estacion*>*estacionesLlegada, Recorrido *intermedio){
+	/*recorridoMinimo deberia llegar por referencia*/
+	//Recorrido recorridoMinimo;
+	//Lista<Estacion*>estacionesLlegada;
+	bool hayRecorrido=false;
+	//this->obtenerEstacionesCercanas(llegada,&estacionesLlegada);
+	estacionesLlegada->iniciarCursor();
+	while(estacionesLlegada->avanzarCursor()&&!hayRecorrido){
+		Estacion* destino=estacionesLlegada->obtenerCursor();
+		hayRecorrido=destino->verLinea()==intermedia->verLinea();
+		if(hayRecorrido){
+			/*recorridoIntermedio->agregar(destino);
+			recorridoIntermedio->agregar(intermedia,1);*/
+			if(intermedio->estaVacio()){
+				/*agregar intermedia y destino a recorridoMinimo. calcular su distancia
+				 * */
+				intermedio->agregarAlFinal(destino);
+				intermedio->agregarAlPrincipio(intermedia);
+			}else{
+				Recorrido alternativo;
+				alternativo.agregarAlFinal(destino);
+				alternativo.agregarAlPrincipio(intermedia);
+				bool esMasCorto;//=intermedio<alternativo;
+				if(esMasCorto){
+					//intermedio=alternativo;
+				}
+				/*
+				 * crear un Recorrido recorridoALternativo con destino e intermedia y comparar
+				 * con recorridoMinimo*/
+				/*si recorridoAlternativo es mejor en distancia que recorridoMinimo entonces
+				 * 'igualar' el primero al segundo*/
+				/*repetir el proceso hasta que se acaben las opciones de combinar intermedia con la lista
+				 * estacionesLlegada*/
+			}
+			hayRecorrido=false;
+			/*no sale hasta que se encuentre el minimo camino entre estacionesLlegada e
+			 *  intermedio pasado por referncia*/
+		}
 
-void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas puntoLlegada){
-	Lista<Estacion*>  estacionesPartida;
-	Lista<Estacion*>  estacionesLlegada;
-	Lista<Estacion*>recorridoCombinado;
-	Lista<Estacion*>recorridoDirectoSupuesto;
-
-	bool existeRecorridoDirecto=this->verRecorridoDirecto(puntoPartida, puntoLlegada,&recorridoDirectoSupuesto);
-	if(existeRecorridoDirecto){
-		recorridoCombinado.agregar(recorridoDirectoSupuesto);
 	}
-	else{
-		obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
-		bool recorridoCombinadoEncontrado=false;
-		estacionesPartida.iniciarCursor();
-		while(estacionesPartida.avanzarCursor()&&!recorridoCombinadoEncontrado){
-			Estacion* estacionPartida=estacionesPartida.obtenerCursor();
-			if(estacionPartida->verTipoTransporte()=="ferrocarril"){
-				recorridoCombinadoEncontrado=this->buscarPuntoIntermedio(this->estacionesTren, estacionPartida,puntoLlegada,
-							&recorridoCombinado);
-				if(recorridoCombinadoEncontrado){
-					recorridoCombinado.agregar(estacionPartida, 1);
-				}
-			}else if(estacionPartida->verTipoTransporte()=="subte"){
-					recorridoCombinadoEncontrado=this->buscarPuntoIntermedio(this->bocasSubte, estacionPartida, puntoLlegada,
-							&recorridoCombinado);
-				if(recorridoCombinadoEncontrado){
-					recorridoCombinado.agregar(estacionPartida, 1);
-				}
+	//return hayRecorrido;
+	return !intermedio->estaVacio();
+}
 
-			}else if(estacionPartida->verTipoTransporte()=="colectivo"){
-					recorridoCombinadoEncontrado=this->buscarPuntoIntermedio(this->estacionesColectivo,estacionPartida, puntoLlegada,
-							&recorridoCombinado);
-				if(recorridoCombinadoEncontrado){
-						recorridoCombinado.agregar(estacionPartida, 1);
+void Ciudad::buscarEstacionIntermedia(Lista<Estacion*>*estaciones, Estacion*partida,
+		Coordenadas llegada, Lista<Estacion*>*estacionesLlegada,
+		Recorrido *recorridoIntermedioAnterior){
+	bool existeCombinacion=false;
+	estaciones->iniciarCursor();
+	while(estaciones->avanzarCursor()){
+		Estacion *estacionIntermedia=estaciones->obtenerCursor();
+		if(partida->verLinea()==estacionIntermedia->verLinea()&&partida!=estacionIntermedia){
+			Lista<Estacion*>*estacionesAdyacentes=estacionIntermedia->obtenerAdyacentes();
+			if(!estacionesAdyacentes->estaVacia()){
+				/*RECORRIDO recorridoMinimo
+				 * en principio estaria vacio*/
+				//Recorrido recorridoIntermedioAnterior;
+				estacionesAdyacentes->iniciarCursor();
+				while(estacionesAdyacentes->avanzarCursor()&&!existeCombinacion){
+					Estacion* adyacente=estacionesAdyacentes->obtenerCursor();
+					Recorrido intermedio;
+					existeCombinacion=hayCombinacion(adyacente,llegada,
+							estacionesLlegada, &intermedio );
+					if(existeCombinacion){
+						/*si se encontro combinacion entonces se tiene un objeto Recorrido recorridoIntermedio
+						 * con una estacion intermedia y destino de minima distancia*/
+						//recorridoIntermedio->agregar(estacionIntermedia,1);
+						intermedio.agregarAlPrincipio(estacionIntermedia);
+						if(recorridoIntermedioAnterior->estaVacio()){
+							//recorridoIntermedioAnterior=intermedio;
+						}
+						else{
+							bool esMasCorto;//=recorridoIntermedioAnterior<intermedio;
+							if(esMasCorto){
+								//recorridoIntermedioAnterior=intermedio;
+							}
+						}
+						existeCombinacion=false;
+						/*luego de agregar la otra estacion intermedia en la primera posicion de Recorrido
+						 * recorridoIntermedio y calculo nuevamente la distancia*/
+
+						/*evaluo el recorrido anterior con RecorridoMinimo de tda ciudad
+						 * si este esta vacio (la primer iteracion siempre lo va a tomar como vacio)
+						 * entonces recorridoMinimo va a pasar a ser recorridoIntemedio*/
+					}
 				}
+				/*al tener Recorrido recorridoMinimo quito la condicion existeCombinacion del 'while'
+				 * entonces prueba con otra estacion adyacente y hace el mismo proceso*/
 			}
 		}
 	}
-	if(!recorridoCombinado.estaVacia()){
-		this->leerRecorrido(&recorridoCombinado);
-
+}
+void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas puntoLlegada){
+	Lista<Estacion*>estacionesPartida;
+	Lista<Estacion*>estacionesLlegada;
+	obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
+	obtenerEstacionesCercanas (puntoLlegada,&estacionesLlegada );
+	Recorrido recorridoCombinadoMinimo;
+	bool recorridoCombinadoEncontrado=false;
+	estacionesPartida.iniciarCursor();
+	while(estacionesPartida.avanzarCursor()&&!recorridoCombinadoEncontrado){
+		//Lista<Estacion*>recorridoCombinado;
+		Recorrido recorridoCombinadoAlternativo;
+		Estacion* estacionPartida=estacionesPartida.obtenerCursor();
+		if(estacionPartida->verTipoTransporte()=="ferrocarril"){
+			/*buscarEstacionIntermedia(estacionesTren,estacionPartida, puntoLlegada, &recorridoCombinado,
+					&estacionesLlegada, &recorridoCombinadoAlternativo );*/
+			buscarEstacionIntermedia(estacionesTren,estacionPartida, puntoLlegada,
+								&estacionesLlegada, &recorridoCombinadoAlternativo );
+		}else if(estacionPartida->verTipoTransporte()=="subte"){
+			/*buscarEstacionIntermedia(bocasSubte,estacionPartida, puntoLlegada, &recorridoCombinado,
+				&estacionesLlegada, &recorridoCombinadoAlternativo);*/
+			buscarEstacionIntermedia(bocasSubte,estacionPartida, puntoLlegada,
+							&estacionesLlegada, &recorridoCombinadoAlternativo);
+		}else if(estacionPartida->verTipoTransporte()=="colectivo"){
+		/*buscarEstacionIntermedia(estacionesColectivo,estacionPartida, puntoLlegada, &recorridoCombinado,
+				&estacionesLlegada, &recorridoCombinadoAlternativo);*/
+			buscarEstacionIntermedia(estacionesColectivo,estacionPartida, puntoLlegada,
+							&estacionesLlegada, &recorridoCombinadoAlternativo);
+		}
+		//recorridoCombinadoEncontrado=!recorridoCombinado.estaVacia();
+		recorridoCombinadoEncontrado=!recorridoCombinadoAlternativo.estaVacio();
+		//if(!recorridoCombinado.estaVacia()){
+		if(recorridoCombinadoEncontrado){
+			/* se supone que para esta parte ya se tiene un Recorrido recorridoMinimo que sale de buscarEstacionIntermdia()
+			 * y que a su vez sale de hayCombinacion()*/
+			//recorridoCombinado.agregar(estacionPartida,1);
+			recorridoCombinadoAlternativo.agregarAlPrincipio(estacionPartida);
+			/*tengo que tener un recorridoMinimo vacio y cargarle el que tengo hasta ahora si es que esta vacio
+			 * si no lo compara con el que tenga guardado.
+			 * Este ultimo puede ser un recorridoMinimo de tda ciudad*/
+			if(recorridoCombinadoMinimo.estaVacio()){
+				/*igualar recorridos*/
+				recorridoCombinadoMinimo=recorridoCombinadoAlternativo;
+			}
+			else{
+				bool mejorDistancia;//=recorridoCombinadoAlternativo<recorridoCombinadoMinimo;
+				if(mejorDistancia){
+					recorridoCombinadoMinimo=recorridoCombinadoAlternativo;
+				}
+			}
+			//this->leerRecorrido(&recorridoCombinado);
+		}
+		else{
+			std::cout<<"No Hay recorrido combinado "<<std::endl;
+		}
+			/*if(!recorridoMinimo.estaVacia()){
+				//si ya hay un recorridoMinimo calculo y compara distancias
+				unsigned int distancia=this->verDistancia(&recorridoCombinado);
+				if(distancia<distanciaMinima){
+					//guardar en recorridoMinimo los elementos de recorridoCombinado borrando los de
+					//recorridoMinimo anterior ¿se borran las referencias guardadas? probar y pasar a copia
+					//de estaciones en ese caso;
+					recorridoMinimo=recorridoCombinado;
+					distanciaMinima=distancia;
+				}
+			}else{
+				//si recorridoMinimo esta vacia
+				recorridoMinimo.agregar(recorridoCombinado);
+				distanciaMinima=this->verDistancia(&recorridoMinimo);
+			}*/
+	}
+	//}
+/*
+	if(!recorridoMinimo.estaVacia()){
+		this->leerRecorrido(&recorridoMinimo);
 	}
 	else{
 		std::cout<<"No existe un recorrido con una combinacion..."<<std::endl;
-	}
+	}*/
 }
+
 
 /*post: Imprime algunos campos de Lista<Estacion*> *recorrido
  * por ej: tipo de transporte|linea/ramal que corresponde|nombre de parada/estacion|coordenadas geograficas.*/
@@ -185,54 +385,11 @@ void Ciudad::leerRecorrido(Lista<Estacion*>*recorrido){
 	recorrido->iniciarCursor();
 	while(recorrido->avanzarCursor()){
 		Estacion* estacion=recorrido->obtenerCursor();
-		std::cout<<" | "<<estacion->verTipoTransporte()<< " | "<<estacion->verLinea()<<" | "<<" | "<<estacion->verNombre()
+		std::cout<<" | "<<estacion->verTipoTransporte()<< " | "
+				<<estacion->verLinea()<<" | "<<" | "<<estacion->verNombre()
 				<<" | "<<estacion->verUbicacionLatitud()<<" | "<<estacion->verUbicacionLongitud()<<" | "<<std::endl;
 	}
 
 }
-/*post: devuelve true si encuentra un recorrido entre ambas coordenadas , es decir si hay 2 paradas/estaciones que estan en el mismo
- * tipo de transporte y linea o ramal.
- * */
-
-bool Ciudad::verRecorridoDirecto(Coordenadas puntoPartida, Coordenadas puntoLlegada,
-
-	Lista<Estacion*>*recorridoDirecto ){
-
-	Lista<Estacion*>estacionesPartida;
-	Lista<Estacion*>estacionesLlegada;
-	obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
-	obtenerEstacionesCercanas (puntoLlegada, &estacionesLlegada);
-
-	vincularPartidaLlegada(&estacionesPartida, &estacionesLlegada, recorridoDirecto);
-	return !(recorridoDirecto->estaVacia());
-
-
-}
-
-/*pre: lista de estaciones de un transporte , una parada/estacion de partida, lista recorridoCombinado vacia por referencia
- * post: devuelve true si encuentra un posible recorrido desde Estacion *estacionPartida hasta Coordenadas puntoLlegada
- *  pero combinando transporte y carga en Lista<Estacion*>*recorridoCombinado dichas estaciones */
-
-bool Ciudad::buscarPuntoIntermedio(Lista<Estacion*>*estacionesARevisar, Estacion* estacionPartida, Coordenadas puntoLlegada,
-		Lista<Estacion*>*recorridoCombinado){
-
-	bool recorridoDirectoEncontrado=false;
-
-	estacionesARevisar->iniciarCursor();
-	while(estacionesARevisar->avanzarCursor()&&!recorridoDirectoEncontrado){
-		Estacion* estacionIntermedia=estacionesARevisar->obtenerCursor();
-		if(estacionIntermedia->verLinea()==estacionPartida->verLinea()){
-			Lista<Estacion*> recorridoDirecto;
-			Coordenadas ubicacionIntermedia=estacionIntermedia->verUbicacion();
-			recorridoDirectoEncontrado=this->verRecorridoDirecto(ubicacionIntermedia, puntoLlegada, &recorridoDirecto);
-			if(recorridoDirectoEncontrado){
-				recorridoCombinado->agregar(recorridoDirecto);
-				recorridoCombinado->agregar(estacionIntermedia, 1);
-			}
-		}
-	}
-		return recorridoDirectoEncontrado;
-}
-
 
 
