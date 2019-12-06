@@ -28,12 +28,6 @@ public:
 
 	void agregarAlPrincipio(Estacion* nuevaEstacion);
 
-	bool operator<(Recorrido *otroRecorrido){
-
-	}
-	void operator =(Recorrido* otroRecorrido){
-
-	}
 	float obtenerDistancia();
 
 	bool estaVacio();
@@ -46,16 +40,9 @@ public:
 
 	Estacion* obtenerRecorrido();
 
-	void imprimirRecorrido(){
-		this->iniciarRecorrido();
-		while(this->avanzarRecorrido()){
-			Estacion* parada=this->obtenerRecorrido();
-			std::cout<<" | "<<parada->verTipoTransporte()<< " | "
-			<<parada->verLinea()<<" | "<<" | "<<parada->verNombre()
-			<<" | "<<parada->verUbicacionLatitud()<<" | "<<
-			parada->verUbicacionLongitud()<<" | "<<std::endl;
-		}
-	}
+	bool operator <= (Recorrido* otroRecorrido);
+
+	void operator =(Recorrido* otroRecorrido);
 
 	~Recorrido();
 
