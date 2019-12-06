@@ -22,6 +22,9 @@ private:
 public:
 
 	Recorrido();
+	bool operator=(Recorrido algo){
+
+	}
 
 	/*agrega estacione al final del recororrido*/
 	void agregarAlFinal(Estacion* nuevaEstacion);

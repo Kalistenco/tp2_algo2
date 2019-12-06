@@ -207,7 +207,7 @@ void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<
  * post:imprime si existe un recorrido directo entre las coordenadas pedidas,
  *  si no existe busca e imprime un recorrido con combinacion*/
 bool Ciudad::hayCombinacion(Estacion *intermedia, Coordenadas llegada,
-		Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada){
+		Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada, Recorrido* intermedio){
 	/*recorridoMinimo deberia llegar por referencia*/
 	Recorrido recorridoMinimo;
 	//Lista<Estacion*>estacionesLlegada;
@@ -216,16 +216,33 @@ bool Ciudad::hayCombinacion(Estacion *intermedia, Coordenadas llegada,
 	estacionesLlegada->iniciarCursor();
 	while(estacionesLlegada->avanzarCursor()&&!hayRecorrido){
 		Estacion* destino=estacionesLlegada->obtenerCursor();
+	
 		hayRecorrido=destino->verLinea()==intermedia->verLinea();
 		if(hayRecorrido){
 			recorridoIntermedio->agregar(destino);
 			recorridoIntermedio->agregar(intermedia,1);
 		}
 		if(recorridoMinimo.estaVacio()){
+			intermedio->agregarAlFinal(destino);
+			intermedio->agregarAlPrincipio(intermedia);
+
+
 			/*agregar intermedia y destino a recorridoMinimo. calcular su distancia
 			 * */
 		}else{
-			/*
+			Recorrido alternativo;
+			alternativo.agregarAlFinal(destino);
+			alternativo.agregarAlPrincipio(intermedia);
+			if(recorridoMinimo.estaVacio){
+				recorridoMinimo=alternativo;
+			}
+			else{
+				bool esMinimo=alternativorecorridoMinimo;
+				if(esMinimo){
+					recorridoMinimo=alternativo;
+				}
+			}
+					/*
 			 * crear un Recorrido recorridoALternativo con destino e intermedia y comparar
 			 * con recorridoMinimo*/
 			/*si recorridoAlternativo es mejor en distancia que recorridoMinimo entonces
@@ -276,6 +293,7 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 	Lista<Estacion*>estacionesLlegada;
 	obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
 	obtenerEstacionesCercanas (puntoLlegada,&estacionesLlegada );
+	Recorrido recorridoMinimo;
 
 	bool recorridoCombinadoEncontrado=false;
 	estacionesPartida.iniciarCursor();
