@@ -7,20 +7,13 @@
 
 #include <iostream>
 #include "Ciudad.h"
-
+#include "Menu.h"
+using namespace std;
 int main(){
-	Ciudad miCiudad;
-	Lista<Tren*> *estaciones=miCiudad.verEstacionesTren();
-	
-	estaciones->iniciarCursor();
-	/*de prueba para ver la carga de archivos*/
-			std::cout<<"INICIO CURSOR";
 
 
-	while(estaciones->avanzarCursor()){
-			std::cout<<"ENTRASTE AL WHILE?";
-			estaciones->obtenerCursor()->verRamal();
-	}
+	Menu menu;
+	menu.iniciarMenu();
 
 	return 0;
 }
