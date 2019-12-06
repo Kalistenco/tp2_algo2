@@ -6,7 +6,6 @@
  */
 
 #include "Archivo.h"
-#include<iostream>
 #include <fstream>
 #include "Lista.h"
 
@@ -22,16 +21,16 @@ Archivo::Archivo(std::string linkArchivoRelativo){
 	}
 }
 
-Lista<std::string>* Archivo::leerArchivo(){
+void Archivo::leerArchivo(Lista<std::string> &listaVacia){
 
-	Lista<std::string> *listaDeRegistros=new Lista<std::string>;	
+	//Lista<std::string> listaDeRegistros;//=new Lista<std::string>;
     std::ifstream archivo(linkArchivo.c_str());
 		
 	while(!archivo.eof()){
 		std::string lineaVacia;
 		getline(archivo, lineaVacia);
-		listaDeRegistros->agregar(lineaVacia);
+		listaVacia.agregar(lineaVacia);
 	}
 	
-	return listaDeRegistros;
+	//return &listaDeRegistros;
 }
