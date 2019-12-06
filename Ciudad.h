@@ -13,6 +13,7 @@
 #include "Archivo.h"
 #include  "util.h"
 #include "Coordenadas.h"
+#include "Recorrido.h"
 
 class Ciudad {
 
