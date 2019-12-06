@@ -375,5 +375,125 @@ void Ciudad::leerRecorrido(Lista<Estacion*>*recorrido){
 	}
 
 }
+/*
+
+
+bool Ciudad::hayCombinacion(Estacion *intermedia, Coordenadas llegada,
+		 Lista<Estacion*>*estacionesLlegada, Recorrido *intermedio){
+	bool hayRecorrido=false;
+	estacionesLlegada->iniciarCursor();
+	while(estacionesLlegada->avanzarCursor()&&!hayRecorrido){
+		Estacion* destino=estacionesLlegada->obtenerCursor();
+		hayRecorrido=destino->verLinea()==intermedia->verLinea();
+		if(hayRecorrido){
+			if(intermedio->estaVacio()){
+				intermedio->agregarAlFinal(destino);
+				intermedio->agregarAlPrincipio(intermedia);
+			}else{
+				Recorrido alternativo;
+				alternativo.agregarAlFinal(destino);
+				alternativo.agregarAlPrincipio(intermedia);
+				bool esMasCorto=*intermedio<&alternativo;
+				if(esMasCorto){
+					*intermedio=alternativo;
+				}
+
+			}
+			hayRecorrido=false;
+		}
+
+	}
+	return !intermedio->estaVacio();
+}*/
+/*
+void Ciudad::buscarEstacionIntermedia(Lista<Estacion*>*estaciones, Estacion*partida,
+		Coordenadas llegada, Lista<Estacion*>*estacionesLlegada,
+		Recorrido *recorridoIntermedioAnterior){
+	bool existeCombinacion=false;
+	estaciones->iniciarCursor();
+	while(estaciones->avanzarCursor()){
+		Estacion *estacionIntermedia=estaciones->obtenerCursor();
+		if(partida->verLinea()==estacionIntermedia->verLinea()&&partida!=estacionIntermedia){
+			Lista<Estacion*>*estacionesAdyacentes=estacionIntermedia->obtenerAdyacentes();
+			if(!estacionesAdyacentes->estaVacia()){
+			
+				estacionesAdyacentes->iniciarCursor();
+				while(estacionesAdyacentes->avanzarCursor()&&!existeCombinacion){
+					Estacion* adyacente=estacionesAdyacentes->obtenerCursor();
+					Recorrido intermedio;
+					existeCombinacion=hayCombinacion(adyacente,llegada,
+							estacionesLlegada, &intermedio );
+					if(existeCombinacion){
+					
+						intermedio.agregarAlPrincipio(estacionIntermedia);
+						if(recorridoIntermedioAnterior->estaVacio()){
+							*recorridoIntermedioAnterior=intermedio;
+						}
+						else{
+							bool esMasCorto=(*recorridoIntermedioAnterior)<&intermedio;
+							if(esMasCorto){
+								*recorridoIntermedioAnterior=intermedio;
+							}
+						}
+						existeCombinacion=false;
+						
+					}
+				}
+				
+			}
+		}
+	}
+}
+*/
+/*
+void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas puntoLlegada){
+	Lista<Estacion*>estacionesPartida;
+	Lista<Estacion*>estacionesLlegada;
+	obtenerEstacionesCercanas (puntoPartida,&estacionesPartida );
+	obtenerEstacionesCercanas (puntoLlegada,&estacionesLlegada );
+	Recorrido recorridoCombinadoMinimo;
+	bool recorridoCombinadoEncontrado=false;
+	estacionesPartida.iniciarCursor();
+	while(estacionesPartida.avanzarCursor()&&!recorridoCombinadoEncontrado){
+		Recorrido recorridoCombinadoAlternativo;
+		Estacion* estacionPartida=estacionesPartida.obtenerCursor();
+		if(estacionPartida->verTipoTransporte()=="ferrocarril"){
+
+			buscarEstacionIntermedia(estacionesTren,estacionPartida, puntoLlegada,
+								&estacionesLlegada, &recorridoCombinadoAlternativo );
+		}else if(estacionPartida->verTipoTransporte()=="subte"){
+
+			buscarEstacionIntermedia(bocasSubte,estacionPartida, puntoLlegada,
+							&estacionesLlegada, &recorridoCombinadoAlternativo);
+		}else if(estacionPartida->verTipoTransporte()=="colectivo"){
+
+			buscarEstacionIntermedia(estacionesColectivo,estacionPartida, puntoLlegada,
+							&estacionesLlegada, &recorridoCombinadoAlternativo);
+		}
+		recorridoCombinadoEncontrado=!recorridoCombinadoAlternativo.estaVacio();
+		if(recorridoCombinadoEncontrado){
+			
+			recorridoCombinadoAlternativo.agregarAlPrincipio(estacionPartida);
+
+			if(recorridoCombinadoMinimo.estaVacio()){
+				recorridoCombinadoMinimo=recorridoCombinadoAlternativo;
+			}
+			else{
+				bool mejorDistancia=recorridoCombinadoAlternativo<&recorridoCombinadoMinimo;
+				if(mejorDistancia){
+					recorridoCombinadoMinimo=recorridoCombinadoAlternativo;
+				}
+			}
+		if(!recorridoCombinadoMinimo.estaVacio()){
+			recorridoCombinadoMinimo.leerRecorrido();
+		}
+		}
+		else{
+			std::cout<<"No Hay recorrido combinado "<<std::endl;
+		}
+	}
+
+}
+*/
 
 
