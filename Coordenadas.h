@@ -57,6 +57,13 @@ class Coordenadas {
         float verLatitud(){
             return this->latitud;
         }
+        bool operator !=(Coordenadas aComparar){
+        	return this->latitud!=aComparar.verLatitud()&&this->longitud!=aComparar.verLongitud()
+        			&&(aComparar.valida());
+        }
+        bool valida(){
+        	return this->latitud!=0.0&&this->longitud!=0.0;
+        }
 
         ~Coordenadas(){
         };
