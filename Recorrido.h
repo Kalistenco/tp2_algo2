@@ -10,6 +10,7 @@
 #include"Estacion.h"
 #include"Lista.h"
 #include"Nodo.h"
+
 class Recorrido{
 
 private:
@@ -22,9 +23,10 @@ private:
 public:
 
 	Recorrido();
-	bool operator=(Recorrido algo){
 
-	}
+	// bool operator=(Recorrido algo){
+
+	// }
 
 	/*agrega estacione al final del recororrido*/
 	void agregarAlFinal(Estacion* nuevaEstacion);
