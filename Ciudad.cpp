@@ -9,7 +9,7 @@
 #include "Ciudad.h"
 #include "Coordenadas.h"
 #include "Estacion.h"
-
+#include "Recorrido.h"
 Ciudad::Ciudad(){
 
 	this->estacionesTren = new Lista<Estacion*>;
@@ -19,7 +19,6 @@ Ciudad::Ciudad(){
 	Archivo trenes(ARCHIVO_TRENES);
 	Lista<std::string> registrosEstacionesTren;
 	trenes.leerArchivo(registrosEstacionesTren);
-
 
 	Archivo colectivos(ARCHIVO_COLECTIVOS);
 	Lista<std::string> registrosEstacionesColectivo;
@@ -209,7 +208,8 @@ void Ciudad::vincularPartidaLlegada(Lista<Estacion*> * estacionesPartida, Lista<
  *  si no existe busca e imprime un recorrido con combinacion*/
 bool Ciudad::hayCombinacion(Estacion *intermedia, Coordenadas llegada,
 		Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada){
-
+	/*recorridoMinimo deberia llegar por referencia*/
+	Recorrido recorridoMinimo;
 	//Lista<Estacion*>estacionesLlegada;
 	bool hayRecorrido=false;
 	//this->obtenerEstacionesCercanas(llegada,&estacionesLlegada);
@@ -220,6 +220,18 @@ bool Ciudad::hayCombinacion(Estacion *intermedia, Coordenadas llegada,
 		if(hayRecorrido){
 			recorridoIntermedio->agregar(destino);
 			recorridoIntermedio->agregar(intermedia,1);
+		}
+		if(recorridoMinimo.estaVacio()){
+			/*agregar intermedia y destino a recorridoMinimo. calcular su distancia
+			 * */
+		}else{
+			/*
+			 * crear un Recorrido recorridoALternativo con destino e intermedia y comparar
+			 * con recorridoMinimo*/
+			/*si recorridoAlternativo es mejor en distancia que recorridoMinimo entonces
+			 * 'igualar' el primero al segundo*/
+			/*repetir el proceso hasta que se acaben las opciones de combinar intermedia con la lista
+			 * estacionesLlegada*/
 		}
 	}
 	return hayRecorrido;
@@ -232,19 +244,29 @@ void Ciudad::buscarEstacionIntermedia(Lista<Estacion*>*estaciones, Estacion*part
 	while(estaciones->avanzarCursor()){
 		Estacion *estacionIntermedia=estaciones->obtenerCursor();
 		if(partida->verLinea()==estacionIntermedia->verLinea()&&partida!=estacionIntermedia){
-
 			Lista<Estacion*>*estacionesAdyacentes=estacionIntermedia->obtenerAdyacentes();
 			if(!estacionesAdyacentes->estaVacia()){
-
+				/*RECORRIDO recorridoMinimo
+				 * en principio estaria vacio*/
 				estacionesAdyacentes->iniciarCursor();
 				while(estacionesAdyacentes->avanzarCursor()&&!existeCombinacion){
 					Estacion* adyacente=estacionesAdyacentes->obtenerCursor();
 
 					existeCombinacion=hayCombinacion(adyacente,llegada,recorridoIntermedio,estacionesLlegada );
 					if(existeCombinacion){
+						/*si se encontro combinacion entonces se tiene un objeto Recorrido recorridoIntermedio
+						 * con una estacion intermedia y destino de minima distancia*/
 						recorridoIntermedio->agregar(estacionIntermedia,1);
+						/*luego de agregar la otra estacion intermedia en la primera posicion de Recorrido
+						 * recorridoIntermedio y calculo nuevamente la distancia*/
+
+						/*evaluo el recorrido anterior con RecorridoMinimo de tda ciudad
+						 * si este esta vacio (la primer iteracion siempre lo va a tomar como vacio)
+						 * entonces recorridoMinimo va a pasar a ser recorridoIntemedio*/
 					}
 				}
+				/*al tener Recorrido recorridoMinimo quito la condicion existeCombinacion del 'while'
+				 * entonces prueba con otra estacion adyacente y hace el mismo proceso*/
 			}
 		}
 	}
@@ -270,7 +292,13 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 		}
 		recorridoCombinadoEncontrado=!recorridoCombinado.estaVacia();
 		if(!recorridoCombinado.estaVacia()){
+			/* se supone que para esta parte ya se tiene un Recorrido recorridoMinimo que sale de buscarEstacionIntermdia()
+			 * y que a su vez sale de hayCombinacion()*/
 			recorridoCombinado.agregar(estacionPartida,1);
+			/*tengo que tener un recorridoMinimo vacio y cargarle el que tengo hasta ahora si es que esta vacio
+			 * si no lo compara con el que tenga guardado.
+			 * Este ultimo puede ser un recorridoMinimo de tda ciudad*/
+
 			this->leerRecorrido(&recorridoCombinado);
 		}
 		else{
