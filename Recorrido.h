@@ -8,9 +8,8 @@
 #ifndef RECORRIDO_H_
 #define RECORRIDO_H_
 #include"Estacion.h"
-#include"Lista.h"
+//#include"Lista.h"
 #include"Nodo.h"
-
 class Recorrido{
 
 private:
@@ -23,10 +22,6 @@ private:
 public:
 
 	Recorrido();
-
-	// bool operator=(Recorrido algo){
-
-	// }
 
 	/*agrega estacione al final del recororrido*/
 	void agregarAlFinal(Estacion* nuevaEstacion);
@@ -44,6 +39,20 @@ public:
 	bool avanzarRecorrido();
 
 	Estacion* obtenerRecorrido();
+	void leerRecorrido(){
+
+		this->iniciarRecorrido();
+		while(this->avanzarRecorrido()){
+			Estacion* parada=this->obtenerRecorrido();
+			std::cout<<" | "<<parada->verTipoTransporte()<< " | "
+					<<parada->verLinea()<<" | "<<" | "<<parada->verNombre()
+					<<" | "<<parada->verUbicacionLatitud()<<" | "<<parada->verUbicacionLongitud()<<" | "<<std::endl;
+		}
+	}
+
+	bool operator < (Recorrido* otroRecorrido);
+
+	void operator =(Recorrido* otroRecorrido);
 
 	~Recorrido();
 
