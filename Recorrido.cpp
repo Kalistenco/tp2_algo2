@@ -5,7 +5,7 @@
  *      Author: David
  */
 #include "Recorrido.h"
-#include "Estacion.h"
+//#include "Estacion.h"
 
 Recorrido::Recorrido(){
 
@@ -90,6 +90,29 @@ Estacion* Recorrido::obtenerRecorrido(){
 	return recorrido;
 
 }
+
+bool Recorrido::operator <(Recorrido* otroRecorrido){
+
+	if(this->obtenerDistancia() < otroRecorrido->obtenerDistancia()){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+void Recorrido:: operator =(Recorrido* otroRecorrido){
+	while(this->primerEstacion != NULL){
+		Nodo<Estacion*>* aBorrar = this->primerEstacion;
+		this->primerEstacion = this->primerEstacion->obtenerSiguiente();
+		delete aBorrar;
+	}
+	otroRecorrido->iniciarRecorrido();
+	while(otroRecorrido->avanzarRecorrido()){
+		this->agregarAlFinal(otroRecorrido->obtenerRecorrido());
+	}
+
+}
+
 
 Recorrido::~Recorrido(){
 

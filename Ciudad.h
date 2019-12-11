@@ -24,7 +24,7 @@ class Ciudad {
 		Lista<Estacion*>paradasColectivoAux;
 	private:
 		bool hayCombinacion(Estacion *intermedia, Coordenadas llegada,
-				Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada, Recorrido* intermedio);
+				Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada);
 		void buscarEstacionIntermedia(Lista<Estacion*>*estaciones, Estacion*partida, Coordenadas puntoLlegada,
 				Lista<Estacion*>*recorridoIntermedio, Lista<Estacion*>*estacionesLlegada);
 		void cargarAdyacentesPorMedioTransporte(Lista<Estacion*>*medioTransporte,
