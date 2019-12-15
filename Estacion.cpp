@@ -111,7 +111,7 @@ void Estacion::leerInformacionColectivo(std::string informacion){
 				longitud=dato;
 			}break;
 
-			case 8:{
+			case 9:{
 				this->linea=dato;
 			}break;
 		}

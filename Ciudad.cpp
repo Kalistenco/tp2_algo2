@@ -52,7 +52,7 @@ void Ciudad::cargarAdyacentesPorMedioTransporte(Lista<Estacion*>*medioTransporte
 		Estacion* posibleAdyacencia=medioTransporte->obtenerCursor();
 		distancia =ubicacion.distanciaMetros(posibleAdyacencia->verUbicacion());
 		/*si es la misma estacion la distancia a si misma debe ser 0 y no la considero*/
-		if(distancia < 250&&distancia>0) {
+		if(distancia < 1000&&distancia>0) {
 			/*si es una boca distinta pero de la misma estacion no la considero*/
 			if(estacionAbuscarAdyacencia->verNombre()!=medioTransporte->
 					obtenerCursor()->verNombre()){
@@ -173,7 +173,7 @@ void Ciudad::cargarEstacionesCercanas(Lista<Estacion*>* medioDeTransporte
 	while(medioDeTransporte->avanzarCursor()){
 		Coordenadas ubicacionEstacion = medioDeTransporte->obtenerCursor()->verUbicacion();
 
-		if(ubicacionEstacion.distanciaMetros(ubicacion) < 250) {
+		if(ubicacionEstacion.distanciaMetros(ubicacion) < 1000) {
 			Estacion * estacion = medioDeTransporte->obtenerCursor();
 			datosCargados->agregar(estacion);
 		}
