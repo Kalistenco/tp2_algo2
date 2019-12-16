@@ -29,8 +29,8 @@ void Menu::iniciarMenu(){
 		cout<<""<<endl;
 		cout<<"  ELIJA TIPO DE RECORIDO  "<<endl;
 		cout<<""<<endl;
-		cout<<"1 - Recorrido sin conbinaciones"<<endl;
-		cout<<"2 - Recorrido con conbinaciones"<<endl;
+		cout<<"1 - Recorrido sin combinaciones"<<endl;
+		cout<<"2 - Recorrido con combinaciones"<<endl;
 		cout<<"0 - salir"<<endl;
 		cout<<""<<endl;
 		cout <<"Ingrese su opcion: ";
@@ -66,21 +66,22 @@ void Menu::iniciarMenu(){
 			break;
 			case '1':
 				cout<<""<<endl;
-				cout<<" RECORRIDO SIN CONBINACIONES "<<endl;
+				cout<<" RECORRIDO SIN COMBINACIONES "<<endl;
 				cout<<""<<endl;
 				this->miCiudad->verRecorridoDirecto(origen,destino);
 				cout<<""<<endl;
 			break;
 			case '2':
 				cout<<""<<endl;
-				cout<<" RECORRIDO CON CONBINACIONES "<<endl;
+				cout<<" RECORRIDO CON COMBINACIONES "<<endl;
 				cout<<""<<endl;
 				this->miCiudad->verRecorridoConCombinacion(origen,destino);
 				cout<<""<<endl;
 			break;
 
 			default:
-				cout<<" OPCION NO VALIDA, INGRESE DE NUEVO SU OPCION "<<endl;
+				cout<<" OPCION NO VALIDA"<<endl;
+				salir = true;
 		}
 	}
 }

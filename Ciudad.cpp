@@ -292,11 +292,12 @@ void Ciudad::verRecorridoConCombinacion(Coordenadas puntoPartida, Coordenadas pu
 
 			this->leerRecorrido(&recorridoCombinado);
 		}
-		else{
-			std::cout<<"No Hay recorrido combinado "<<std::endl;
+	}
+
+		if(recorridoCombinadoEncontrado == false){
+			std::cout<<"No se encontro un recorrido combinando hasta dos medios de transporte y caminando hasta 500 metros"<<std::endl;
 		}
 
-	}
 
 }
 
